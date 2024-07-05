@@ -34,7 +34,6 @@ const HomePage = () => {
           <HiLocationMarker />
           <p className="text-sm font-normal">four street</p>
         </div>
-        <Progress progress={75} />
       </div>
 
       <div className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
