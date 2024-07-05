@@ -3,13 +3,13 @@ const { Client } = require('pg');
 
 const app = express();
 const port = process.env.PORT || 3000;
- 
+
 const client = new Client({
   user: 'postgres',
   password: '2001',
   host: 'localhost',
-  port: 5334,
-  database: 'smart-home',
+  port: 5433,
+  database: 'test',
 })
 
 client.connect()
@@ -37,6 +37,13 @@ app.get('/test-db', async (req, res) => {
 app.get('/', (req, res) => {
   res.send('Hello, Smart Home!');
 });
+
+
+
+
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
