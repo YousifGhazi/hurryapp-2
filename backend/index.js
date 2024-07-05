@@ -3,13 +3,13 @@ const { Client } = require('pg');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+ 
 const client = new Client({
   user: 'postgres',
   password: '2001',
   host: 'localhost',
-  port: 5433,
-  database: 'test',
+  port: 5334,
+  database: 'smart-home',
 })
 
 client.connect()
