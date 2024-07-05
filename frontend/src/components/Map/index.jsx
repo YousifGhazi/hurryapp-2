@@ -1,18 +1,7 @@
 import mapboxgl from "mapbox-gl";
 import { useRef, useEffect, useState } from "react";
-import hikmaImg from "../assets/download.jpeg";
-
-import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import hikmaImg from "../../assets/download.jpeg";
+import LocationsDrawer from "./LocatinosDrawer";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoieW91c2lmLW9kYXkiLCJhIjoiY2x5OGp0cWxnMDd3OTJscGhmbWk5eDNxdSJ9.FASD-xbWAHmgzayQNOcHqQ";
@@ -115,37 +104,8 @@ function MAP() {
       <div className="absolute top-0 left-0 m-2 rounded-lg p-4 z-10 text-white bg-[#23374be6]">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
-
+      <LocationsDrawer />
       <div ref={mapContainer} className="h-screen w-full" />
-
-      <Drawer>
-        <DrawerTrigger asChild>
-          <button className="absolute flex items-center justify-center z-1 w-[3rem]  aspect-square text-white bg-gray-500 rounded-[50%] bottom-10 left-4 active:scale-95 duration-200">
-            T
-          </button>
-        </DrawerTrigger>
-        <DrawerContent className="bg-green-50">
-          <div className="mx-auto w-full max-w-sm ">
-            <DrawerHeader>
-              <DrawerTitle>Locations</DrawerTitle>
-              <DrawerDescription>Selec your location</DrawerDescription>
-            </DrawerHeader>
-            <div className="p-4 pb-0 h-[30vh]">
-              <ul>
-                <li className="p-3 rounded-lg bg-white">Al hikma, Baghdad</li>
-              </ul>
-            </div>
-            <DrawerFooter className="flex flex-row w-full">
-              <Button className="flex-1">Go</Button>
-              <DrawerClose asChild>
-                <Button className="flex-1" variant="outline">
-                  Cancel
-                </Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </div>
-        </DrawerContent>
-      </Drawer>
     </div>
   );
 }
