@@ -5,7 +5,7 @@ import { FaFaceFrownOpen } from "react-icons/fa6";
 import { HiLocationMarker } from "react-icons/hi";
 import TipsCarousel from "@/components/TipsCarousel";
 import LocationView from "@/components/LocationView";
-
+import WeahterForecast from "@/components/WeatherForecast";
 const HomePage = () => {
   // const aqi = [
   //   {
@@ -30,8 +30,12 @@ const HomePage = () => {
         <h1 className="mx-auto text-xl font-bold">Home</h1>
       </nav>
 
-      <div className="bg-white rounded-lg w-full h-20 px-4 py-14 text-lg font-semibold flex flex-col justify-center gap-1">
+      <div className="bg-white rounded-lg w-full  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
         <LocationView />
+      </div>
+
+      <div className="bg-white rounded-lg w-full  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
+        <WeahterForecast />
       </div>
 
       <div className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
@@ -90,7 +94,7 @@ const HomePage = () => {
         </div>
 
         <div className="my-4">
-          <p className=" font-medium text-xs opacity-75 pb-1">Forcast</p>
+          <p className=" font-medium text-xs opacity-75 pb-1">Forecast</p>
 
           <div className="w-full h-24 overflow-x-scroll flex items-center gap-3">
             <div className="min-w-16 h-[90%] flex flex-col justify-center items-center gap-0.5 shadow rounded-md">
