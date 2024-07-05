@@ -27,8 +27,8 @@ function App() {
   return (
     <main>
       <Routes>
-        <Route path="/" element={<MAP />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/map" element={<MAP />} />
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </main>
   );
