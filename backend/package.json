@@ -3,14 +3,17 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
+    "aedes": "^0.51.2",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "mosca": "^2.8.3",
     "mqtt": "^5.7.3",
     "mysql": "^2.18.1",
     "mysql2": "^3.10.2",
     "nodemon": "^3.1.4",
     "pg": "^8.12.0",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.3",
+    "websocket-stream": "^5.5.2"
   }
 }

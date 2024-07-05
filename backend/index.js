@@ -4,7 +4,7 @@ const { Client } = require('pg');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const clientMQTT = require('./services/mqttService');
+const clientMQTT = require('./services/connection');
 
 const client = new Client({
   user: 'postgres',
@@ -14,13 +14,10 @@ const client = new Client({
   database: 'smart-home',
 })
 
-client.connect()
-  .then(() => console.log("Connected to PostgreSQL"))
-  .catch((e) => console.log("Error connecting to PostgreSQL", e));
+// client.connect()
+//   .then(() => console.log("Connected to PostgreSQL"))
+//   .catch((e) => console.log("Error connecting to PostgreSQL", e));
 
-
-
-app.use(clientMQTT);
 
 app.get('/test-db', async (req, res) => {
   try {
