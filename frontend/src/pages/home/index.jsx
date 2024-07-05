@@ -1,39 +1,37 @@
-import { BackIcon, SmileFace } from "./icons";
+import { BackIcon, SmileFace } from "../../components/home page/icons";
 import { FaFaceSmile } from "react-icons/fa6";
 import { FaFaceMeh } from "react-icons/fa6";
 import { FaFaceFrownOpen } from "react-icons/fa6";
 import { HiLocationMarker } from "react-icons/hi";
-import TipsCarousel from "../TipsCarousel";
+import TipsCarousel from "@/components/TipsCarousel";
+import LocationView from "@/components/LocationView";
+
 const HomePage = () => {
-  const aqi = [
-    {
-      src: <FaFaceSmile className="mb-1.5" size={20} color="#FFDE30" />,
-      text: "Low",
-    },
-    {
-      src: <FaFaceMeh className="mb-1.5" size={20} color="#FFDE30" />,
-      text: "Normal",
-    },
-    {
-      src: <FaFaceFrownOpen className="mb-1.5" size={20} color="#FFDE30" />,
-      text: "Extreme",
-    },
-  ];
+  // const aqi = [
+  //   {
+  //     src: <FaFaceSmile className="mb-1.5" size={20} color="#FFDE30" />,
+  //     text: "Low",
+  //   },
+  //   {
+  //     src: <FaFaceMeh className="mb-1.5" size={20} color="#FFDE30" />,
+  //     text: "Normal",
+  //   },
+  //   {
+  //     src: <FaFaceFrownOpen className="mb-1.5" size={20} color="#FFDE30" />,
+  //     text: "Extreme",
+  //   },
+  // ];
 
   return (
     // <div className="w-full h-full flex flex-col items-center no-scrollbar">
     <div className="m-auto w-full h-[100dvh] max-w-sm bg-gray-50 flex flex-col gap-8 px-4">
       <nav className="flex w-full items-center p-4">
-        <BackIcon className="cursor-pointer" />
+        {/* <BackIcon className="cursor-pointer" /> */}
         <h1 className="mx-auto text-xl font-bold">Home</h1>
       </nav>
 
-      <div className="bg-white rounded-lg w-full h-20 px-4 text-lg font-semibold flex flex-col justify-center gap-1">
-        <p>Baghdad</p>
-        <div className="w-full flex items-center gap-2 opacity-60">
-          <HiLocationMarker />
-          <p className="text-sm font-normal">four street</p>
-        </div>
+      <div className="bg-white rounded-lg w-full h-20 px-4 py-14 text-lg font-semibold flex flex-col justify-center gap-1">
+        <LocationView />
       </div>
 
       <div className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
@@ -97,7 +95,7 @@ const HomePage = () => {
           <div className="w-full h-24 overflow-x-scroll flex items-center gap-3">
             <div className="min-w-16 h-[90%] flex flex-col justify-center items-center gap-0.5 shadow rounded-md">
               <p className=" text-[10x] font-light">17:00</p>
-              <SmileFace />
+              {/* <SmileFace /> */}
               <p className="text-base font-bold flex justify-center gap-1">
                 3 <span className=" text-[10px] font-normal">AQI</span>
               </p>

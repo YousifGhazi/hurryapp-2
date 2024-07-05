@@ -1,7 +1,7 @@
 import mapboxgl from "mapbox-gl";
 import { useRef, useEffect, useState } from "react";
 import hikmaImg from "../../assets/download.jpeg";
-import LocationsDrawer from "./LocatinosDrawer";
+import LocationsDrawer from "@/components/Map/LocatinosDrawer";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoieW91c2lmLW9kYXkiLCJhIjoiY2x5OGp0cWxnMDd3OTJscGhmbWk5eDNxdSJ9.FASD-xbWAHmgzayQNOcHqQ";
@@ -26,16 +26,6 @@ function MAP() {
           type: "Point",
           coordinates: [44.3425, 33.2982],
         },
-        //     type: "Feature",
-        //     properties: {
-        //       message: "Baz",
-        //       imageId: 837,
-        //       iconSize: [40, 40],
-        //     },
-        //     geometry: {
-        //       type: "Point",
-        //       coordinates: [-63.292236, -18.281518],
-        //     },
       },
     ],
   };
@@ -104,8 +94,8 @@ function MAP() {
       <div className="absolute top-0 left-0 m-2 rounded-lg p-4 z-10 text-white bg-[#23374be6]">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
-      <LocationsDrawer />
       <div ref={mapContainer} className="h-screen w-full" />
+      <LocationsDrawer />
     </div>
   );
 }
