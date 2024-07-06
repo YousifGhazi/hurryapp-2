@@ -4,6 +4,7 @@ import useLocations from "@/store/locations";
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import useHTTP from "./hooks/useHTTP";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const { setLocationsList, setActiveLocation, locations, getActiveLocation } =
@@ -41,11 +42,13 @@ function App() {
   }, [locations]);
 
   return (
-    <main>
-      <Routes>
-        <Route path="/map" element={<MAP />} />
-        <Route path="/" element={<HomePage />} />
-      </Routes>
+    <main className="bg-gray-50">
+      <AnimatePresence>
+        <Routes>
+          <Route path="/map" element={<MAP />} />
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </AnimatePresence>
     </main>
   );
 }
