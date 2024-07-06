@@ -4,7 +4,7 @@ const { Client } = require('pg');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const clientMQTT = require('./services/connection');
+const clientMQTT = require('./services/mqttService');
 
 const client = new Client({
   user: 'postgres',

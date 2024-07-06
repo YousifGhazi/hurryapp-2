@@ -32,7 +32,7 @@ const HomePage = () => {
         <Link to="/map" replace={true}>
           <BackIcon />
         </Link>
-        <h1 className="mx-auto text-xl font-bold">Home</h1>
+        <h1 className="mx-auto text-xl font-semibold">Home</h1>
       </nav>
 
       <div className="bg-white rounded-lg w-full  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
@@ -104,7 +104,7 @@ const HomePage = () => {
           <div className="w-full h-24 overflow-x-scroll flex items-center gap-3">
             <div className="min-w-16 h-[90%] flex flex-col justify-center items-center gap-0.5 shadow rounded-md">
               <p className=" text-[10x] font-light">17:00</p>
-              {/* <SmileFace /> */}
+              <SmileFace />
               <p className="text-base font-bold flex justify-center gap-1">
                 3 <span className=" text-[10px] font-normal">AQI</span>
               </p>

@@ -50,18 +50,18 @@ function DaysWeatherForecast() {
       <p className="text-[0.625rem] text-gray-600 mb-3">Next 5 days</p>
       <div className="flex flex-col gap-2">
         {forecast.map((day, index) => (
-          <Card key={index} className="flex justify-between items-center p-2 ">
+          <Card key={index} className="flex justify-between items-center p-2 font-medium text-base">
             <p className="text-[0.75rem]">{day.date}</p>
             <div className="flex items-center justify-center gap-2">
               <p className="flex items-center text-[1rem]">
                 {day.max}
-                <span className="text-[0.5rem] text-gray-600">°C</span>
-                <FaLongArrowAltUp className="ml-1" size={6} color="#02DB5C" />
+                <span className="text-[0.5rem] text-gray-600 pl-1">°C</span>
+                <FaLongArrowAltUp className="ml-1" size={7} color="#02DB5C" />
               </p>
               <p className="flex items-center text-[1rem]">
                 {day.min}
-                <span className="text-[0.625rem] text-gray-600">°C</span>
-                <FaLongArrowAltDown className="ml-1" size={6} color="#fa4040" />
+                <span className="text-[0.625rem] text-gray-600 pt-1 pl-1">°C</span>
+                <FaLongArrowAltDown className="ml-1 mt-1" size={7} color="#fa4040" />
               </p>
               <LuCloudSunRain size={24} color="#5d5fef" />
             </div>
