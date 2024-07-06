@@ -1,44 +1,28 @@
-const express = require('express');
 const http = require('http');
-const { Server } = require('socket.io');
+const socket = require('socket.io');
+const { app } = require('../server');
 
-// const wss = new WebSocket.Server({ port: 8080 });
 const server = http.createServer(app);
+const io = socket(server);
 
-const io = new Server(server);
+
 io.on('connection', (socket) => {
-    console.log('Client connected');
-
-    socket.emit('message', 'Welcome to the WebSocket server!');
-
-    // Example: Handle incoming messages
-    socket.on('chat message', (msg) => {
-        console.log('Message received:', msg);
-        // Broadcast to all clients
-        io.emit('chat message', msg);
+    console.log('User connected');
+    socket.on('message', (message) => {
+        console.log('Message:', message);
+        io.emit('message', message);
+    });
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
     });
 });
 
-async function main() {
-    try {
-        await prisma.$connect();
-        console.log('Connected to database');
-    } catch (error) {
-        console.error('Database connection error:', error);
-    }
-}
-
-main().catch((error) => {
-    console.error('Error starting application:', error);
+server.listen(8080, () => {
+    console.log(`Server is running on port ${8080}`);
 });
 
 
-function broadcast(data) {
-    wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(data));
-        }
-    });
-}
 
-module.exports = { broadcast };
+module.exports = {
+    socket
+}

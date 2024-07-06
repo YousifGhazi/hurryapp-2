@@ -5,10 +5,10 @@ const sensorReading = require('./routes/sensorReading');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const dotenv = require('dotenv').config();
 const mqttServer = require('./services/mqttService');
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
+const ws = require('./services/socketService')
 
 
 app.use(express.json());
