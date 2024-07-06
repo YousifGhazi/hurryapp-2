@@ -21,7 +21,7 @@ const PageTransition = (Page) => {
         x: 0,
         y: 0,
         opacity: 1,
-        overflow: "visible",
+        overflow: "auto",
       },
       transition: {
         duration: 1.5,
