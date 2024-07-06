@@ -2,6 +2,8 @@ import mapboxgl from "mapbox-gl";
 import { useRef, useEffect, useState } from "react";
 import hikmaImg from "../../assets/download.jpeg";
 import LocationsDrawer from "@/components/Map/LocatinosDrawer";
+import { useNavigate } from "react-router-dom";
+import PageTransition from "@/components/PageTransition";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoieW91c2lmLW9kYXkiLCJhIjoiY2x5OGp0cWxnMDd3OTJscGhmbWk5eDNxdSJ9.FASD-xbWAHmgzayQNOcHqQ";
@@ -11,7 +13,7 @@ function MAP() {
   const [lng, setLng] = useState(-70.9);
   const [lat, setLat] = useState(42.35);
   const [zoom, setZoom] = useState(0.1);
-
+  const router = useNavigate();
   const geojson = {
     type: "FeatureCollection",
     features: [
@@ -36,6 +38,12 @@ function MAP() {
       speed: speed,
       essential: true,
     });
+  };
+
+  const transformPage = () => {
+    setTimeout(() => {
+      router("/");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -70,6 +78,7 @@ function MAP() {
           15,
           1
         );
+        transformPage();
       });
 
       new mapboxgl.Marker(el)
@@ -100,4 +109,4 @@ function MAP() {
   );
 }
 
-export default MAP;
+export default PageTransition(MAP, "map");

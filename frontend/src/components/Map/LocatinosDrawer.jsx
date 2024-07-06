@@ -38,6 +38,7 @@ function LocationsDrawer() {
                 locations.list.map((location) => {
                   return (
                     <li
+                      key={location.id}
                       onClick={() => setActiveLocation(location.id)}
                       className={clsx(
                         "flex items-center justify-between p-3 rounded-lg bg-white border-2 cursor-pointer duration-150",
