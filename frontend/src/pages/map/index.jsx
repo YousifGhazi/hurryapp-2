@@ -12,7 +12,7 @@ function MAP() {
   const map = useRef(null);
   const [lng, setLng] = useState(-70.9);
   const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(0.1);
+  const [zoom, setZoom] = useState(0);
   const router = useNavigate();
   const geojson = {
     type: "FeatureCollection",
