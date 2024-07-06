@@ -6,6 +6,8 @@ import { HiLocationMarker } from "react-icons/hi";
 import TipsCarousel from "@/components/TipsCarousel";
 import LocationView from "@/components/LocationView";
 import WeahterForecast from "@/components/WeatherForecast";
+
+
 const HomePage = () => {
   // const aqi = [
   //   {
@@ -24,9 +26,9 @@ const HomePage = () => {
 
   return (
     // <div className="w-full h-full flex flex-col items-center no-scrollbar">
-    <div className="m-auto w-full h-[100dvh] max-w-sm bg-gray-50 flex flex-col gap-8 px-4">
+    <div className="m-auto w-full h-full max-w-sm bg-gray-50 flex flex-col gap-8 px-4">
       <nav className="flex w-full items-center p-4">
-        {/* <BackIcon className="cursor-pointer" /> */}
+        <BackIcon className="cursor-pointer" />
         <h1 className="mx-auto text-xl font-bold">Home</h1>
       </nav>
 
@@ -99,7 +101,7 @@ const HomePage = () => {
           <div className="w-full h-24 overflow-x-scroll flex items-center gap-3">
             <div className="min-w-16 h-[90%] flex flex-col justify-center items-center gap-0.5 shadow rounded-md">
               <p className=" text-[10x] font-light">17:00</p>
-              {/* <SmileFace /> */}
+              <SmileFace />
               <p className="text-base font-bold flex justify-center gap-1">
                 3 <span className=" text-[10px] font-normal">AQI</span>
               </p>
