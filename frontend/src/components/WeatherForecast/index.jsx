@@ -28,10 +28,10 @@ function WeahterForecast() {
     <div>
       <h2 className="text-xl font-bold">Weather</h2>
       <div className="flex justify-between">
-        <div className=" leading-tight mb-4 mt-2">
-          <p className="text-[10px] font-medium text-gray-400">Now</p>
+        <div className=" leading-tight mb-5 mt-2">
+          <p className="text-xs font-medium text-gray-400">Now</p>
           <h3 className="text-base font-medium">Rain Shower</h3>
-          <p className="text-[10px] font-medium text-gray-400">Feels like 11</p>
+          <p className="text-xs font-medium text-gray-400">Feels like 11</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
@@ -42,10 +42,10 @@ function WeahterForecast() {
         </div>
       </div>
       <Carousel className="m-auto max-w-xs">
-        <CarouselContent>
+        <CarouselContent className="gap-2 mx-auto">
           {forecast.map((reading, index) => (
             <CarouselItem
-              className="basis-[auto] w-fit pl-2 select-none"
+              className="basis-[auto] w-fit p-0 select-none "
               key={index}
             >
               <Card>
@@ -57,7 +57,6 @@ function WeahterForecast() {
                   <p className="text-[10px] font-light text-gray-400">
                     {reading.dt_txt.split(" ")[1].slice(0, 5)}
                   </p>
-                  {index}
                 </CardContent>
               </Card>
             </CarouselItem>
