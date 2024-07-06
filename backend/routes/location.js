@@ -8,7 +8,7 @@ router.post('/locations', async (req, res) => {
   const { city_name } = req.body;
 
   try {
-    const newLocation = await prisma.location.create({
+    const newLocation = await prisma.locations.create({
       data: {
         city_name,
       },
@@ -23,7 +23,7 @@ router.post('/locations', async (req, res) => {
 // GET all locations
 router.get('/locations', async (req, res) => {
   try {
-    const locations = await prisma.location.findMany();
+    const locations = await prisma.locations.findMany();
     res.json(locations);
   } catch (error) {
     console.error('Error fetching locations:', error);
