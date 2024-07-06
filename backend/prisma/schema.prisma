@@ -7,22 +7,22 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Location {
-  location_id Int      @id @default(autoincrement())
+model Locations {
+  location_id Int       @id @default(autoincrement())
   city_name   String
-  sensors     Sensor[]
+  sensors     Sensors[]
 }
 
-model Sensor {
-  id                Int             @id @default(autoincrement())
+model Sensors {
+  id                Int              @id @default(autoincrement())
   sensor_type       String
   last_reading_time DateTime?
   location_id       Int
-  location          Location        @relation(fields: [location_id], references: [location_id])
-  readings          ReadingSensor[]
+  location          Locations        @relation(fields: [location_id], references: [location_id])
+  readings          ReadingSensors[]
 }
 
-model ReadingSensor {
+model ReadingSensors {
   id                Int      @id @default(autoincrement())
   sensor_id         Int
   timestamp         DateTime @default(now())
@@ -37,5 +37,5 @@ model ReadingSensor {
   Aceton            Float?
   particle_level    Float?
   air_quality_label String?
-  sensor            Sensor   @relation(fields: [sensor_id], references: [id])
+  sensor            Sensors   @relation(fields: [sensor_id], references: [id])
 }

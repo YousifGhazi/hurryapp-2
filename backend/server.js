@@ -25,14 +25,15 @@ main().catch((error) => {
   console.error('Error starting application:', error);
 });
 
-app.use('/', (req, res) => {
-  res.send('Hello world!');
-});
 
 // Routes
 app.use('/api', location);
 app.use('/api', sensor);
 app.use('/api', sensorReading);
+
+app.use('/', (req, res) => {
+  res.send('Hello world!');
+});
 
 // Start server
 app.listen(PORT, () => {
