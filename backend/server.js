@@ -31,7 +31,7 @@ main()
 
 
 app.use('/', (res, req) => {
-  req.send('Hello world!');
+  res.send('Hello world!');
 })
 
 // Routes
