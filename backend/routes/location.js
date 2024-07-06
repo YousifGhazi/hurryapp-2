@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const Location = require('../models/location');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-// EndPoint Create a new location
-router.post('/location', async (req, res) => {
+// POST a new location
+router.post('/locations', async (req, res) => {
   const { city_name } = req.body;
-
   try {
-    const newLocation = await Location.create({
-      city_name,
+    const newLocation = await prisma.location.create({
+      data: { city_name },
     });
     res.status(201).json(newLocation);
   } catch (error) {
@@ -20,7 +20,7 @@ router.post('/location', async (req, res) => {
 // GET all locations
 router.get('/locations', async (req, res) => {
   try {
-    const locations = await Location.findAll();
+    const locations = await prisma.location.findMany();
     res.json(locations);
   } catch (error) {
     console.error('Error fetching locations:', error);

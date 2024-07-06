@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const Sensor = require('../models/sensor');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-// Creete a new sensor
+// POST a new sensor
 router.post('/sensors', async (req, res) => {
   const { sensor_type, last_reading_time, location_id } = req.body;
-
   try {
-    const newSensor = await Sensor.create({
-      sensor_type,
-      last_reading_time,
-      location_id,
+    const newSensor = await prisma.sensor.create({
+      data: {
+        sensor_type,
+        last_reading_time,
+        location_id,
+      },
     });
     res.status(201).json(newSensor);
   } catch (error) {
@@ -22,7 +24,7 @@ router.post('/sensors', async (req, res) => {
 // GET all sensors
 router.get('/sensors', async (req, res) => {
   try {
-    const sensors = await Sensor.findAll();
+    const sensors = await prisma.sensor.findMany();
     res.json(sensors);
   } catch (error) {
     console.error('Error fetching sensors:', error);
