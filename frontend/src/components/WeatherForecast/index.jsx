@@ -28,10 +28,10 @@ function WeahterForecast() {
     <div>
       <h2 className="text-xl font-bold">Weather</h2>
       <div className="flex justify-between">
-        <div className=" leading-tight mb-4 mt-2">
-          <p className="text-[10px] font-medium text-gray-400">Now</p>
+        <div className=" leading-tight mb-5 mt-2">
+          <p className="text-xs font-medium text-gray-400">Now</p>
           <h3 className="text-base font-medium">Rain Shower</h3>
-          <p className="text-[10px] font-medium text-gray-400">Feels like 11</p>
+          <p className="text-xs font-medium text-gray-400">Feels like 11</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
