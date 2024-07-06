@@ -9,10 +9,15 @@ const prisma = new PrismaClient();
 const dotenv = require('dotenv').config();
 const mqttServer = require('./services/mqttService');
 const ws = require('./services/socketService')
+const cors = require('cors');
 
 
+app.use(cors({
+    origin: ['*']
+}));
 app.use(express.json());
 // console.log('DATABASE_URL:', process.env.DATABASE_URL);
+
 
 // Check database connection
 async function main() {

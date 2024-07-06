@@ -14,30 +14,42 @@ import { FaFaceFrownOpen } from "react-icons/fa6";
 import { HiLocationMarker } from "react-icons/hi";
 import { FaChevronLeft } from "react-icons/fa6";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import io from "socket.io-client";
+import axios from "axios";
 
 function AirQuality() {
-  const WS_URL = "ws://192.168.246.181:8080";
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-    WS_URL,
-    {
-      share: false,
-      shouldReconnect: () => true,
-    }
-  );
+  const [data, setData] = useState([]);
+  const [flag, setFlag] = useState(false);
 
-  // Run when the connection state (readyState) changes
+  const socket = io('http://localhost:8080');
+
   useEffect(() => {
-    console.log("Connection state changed");
-    if (readyState === ReadyState.OPEN) {
-      sendJsonMessage({
-        event: "subscribe",
-        data: {
-          channel: "general-chatroom",
-        },
-      });
+    socket.on('message', (message) => {
+      setFlag(true);
+      console.log('Message from server:', message);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios({
+        url: "http://localhost:3000/api/readingSensors",
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }).then(res => setData(res.data))
+        .then(() => setFlag(false))
+        .catch(e => console.log(e));
     }
-  }, [readyState]);
+
+    fetchData();
+  }, [flag]);
+
+  console.log(data);
 
   return (
     <div className="w-full mx-auto max-w-[350px]">
