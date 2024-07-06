@@ -12,16 +12,15 @@ const PageTransition = (Page) => {
         x: "50vw",
         y: "50vh",
         position: "fixed",
-        overflow: "hidden",
         zIndex: 999,
       },
       animate: {
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "100%",
+        position: "relative",
         x: 0,
         y: 0,
         opacity: 1,
-        overflow: "visible",
       },
       transition: {
         duration: 1.5,
@@ -33,7 +32,6 @@ const PageTransition = (Page) => {
       <AnimatePresence>
         <motion.div
           key="page-transition"
-          // variants={transition}
           initial={transition.initial}
           animate={transition.animate}
           transition={transition.transition}
