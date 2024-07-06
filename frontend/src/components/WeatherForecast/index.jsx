@@ -14,12 +14,12 @@ function WeahterForecast() {
   useEffect(() => {
     const fetchLocations = async () => {
       const res = await fetch(
-        "https://api.openweathermap.org/data/2.5/forecast?lat=33.2982&lon=44.3425&appid=fcd70ac0ca9094b1f4f1e3cc662a61dc"
+        "https://api.openweathermap.org/data/2.5/forecast?lat=33.2982&lon=44.3425&units=metric&appid=fcd70ac0ca9094b1f4f1e3cc662a61dc"
       );
       const data = await res.json();
       const forecastList = data.list.slice(0, 9);
       console.log(forecastList);
-      setForecast(data.list);
+      setForecast(forecastList);
     };
     fetchLocations();
   }, []);
@@ -51,10 +51,13 @@ function WeahterForecast() {
               <Card>
                 <CardContent className="px-2 py-2 flex flex-col items-center justify-center gap-0">
                   <LuCloudSunRain size={25} color="#5d5fef" />
-                  <p className="font-medium text-base h-6 pt-2">15°C</p>
+                  <p className="font-medium text-base h-6 pt-2">
+                    {Math.round(reading.main.temp)}°C
+                  </p>
                   <p className="text-[10px] font-light text-gray-400">
                     {reading.dt_txt.split(" ")[1].slice(0, 5)}
                   </p>
+                  {index}
                 </CardContent>
               </Card>
             </CarouselItem>
