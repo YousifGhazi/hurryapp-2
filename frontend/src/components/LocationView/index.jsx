@@ -8,13 +8,13 @@ function LocationView() {
     <div>
       {address && (
         <>
-          <h2 className="font-bold text-xl">{address.split(", ")?.[0]}</h2>
-          <p className="text-gray-600 text-sm my-1">
+          <h2 className="font-semibold text-lg">{address.split(", ")?.[0]}</h2>
+          <p className="text-gray-600 text-sm font-normal my-1">
             {address.split(", ")?.[1]}
           </p>
         </>
       )}
-      <div className="flex text-lg">
+      <div className="flex text-sm opacity-50 font-normal">
         <p>{new Date().toUTCString()}</p>
       </div>
     </div>
