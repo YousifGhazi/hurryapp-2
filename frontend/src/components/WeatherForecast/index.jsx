@@ -30,8 +30,13 @@ function WeahterForecast({ getWeatherIcons }) {
       <div className="flex justify-between">
         <div className=" leading-tight mb-4 mt-2">
           <p className="text-[10px] font-medium text-gray-400">Now</p>
-          <h3 className="text-base font-medium">Rain Shower</h3>
-          <p className="text-[10px] font-medium text-gray-400">Feels like 11</p>
+          <h3 className="text-base font-medium capitalize">
+            {(forecast[0] && forecast[0]?.weather[0]?.description) || "Clear"}
+          </h3>
+          <p className="text-[10px] font-medium text-gray-400">
+            Feels like{" "}
+            {(forecast[0] && Math.round(forecast[0]?.main?.feels_like)) || 0}
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
@@ -46,7 +51,7 @@ function WeahterForecast({ getWeatherIcons }) {
           })}
         </div>
       </div>
-      <Carousel className="m-auto md:m-0 max-w-xs">
+      <Carousel className="m-auto md:m-0 w-full">
         <CarouselContent className="gap-2 mx-auto">
           {forecast.map((reading, index) => (
             <CarouselItem

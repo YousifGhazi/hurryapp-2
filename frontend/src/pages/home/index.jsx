@@ -30,12 +30,14 @@ const HomePage = () => {
         </h1>
       </nav>
 
-      <div className="w-full md:w-[40%] bg-white rounded-lg  px-4 py-4 text-lg font-semibold flex flex-col justify-center md:justify-start  gap-1">
-        <LocationView />
-      </div>
+      <div className="flex flex-col md:flex-row w-full gap-4">
+        <div className="w-full md:w-[40%] bg-white rounded-lg  px-4 py-4 text-lg font-semibold flex flex-col justify-center md:justify-start  gap-1">
+          <LocationView />
+        </div>
 
-      <div className="md:flex-1  bg-white rounded-lg w-full  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
-        <WeahterForecast getWeatherIcons={getWeatherIcons} />
+        <div className="md:flex-1  bg-white rounded-lg w-full  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
+          <WeahterForecast getWeatherIcons={getWeatherIcons} />
+        </div>
       </div>
 
       <div className="flex flex-col w-full md:flex-row-reverse gap-4">

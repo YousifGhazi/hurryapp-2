@@ -10,18 +10,17 @@ function App() {
   const { setLocationsList, setActiveLocation, locations, getActiveLocation } =
     useLocations();
 
-  const [sendHTTP, res] = useHTTP();
   useEffect(() => {
     const loc = [
       {
-        address: "Al hikma, Baghdad",
+        address: "Al Hikma, Baghdad",
         id: 1,
         coordinates: [43.8473, 33.1812],
       },
       {
         address: "54 street, AL Basra",
         id: 2,
-        coordinates: [43.8473, 33.1812],
+        coordinates: [44.32450116569708, 33.319625821412195],
       },
     ];
     setLocationsList(loc);
@@ -34,12 +33,11 @@ function App() {
 
   return (
     <main className="bg-gray-50">
-      <AnimatePresence>
-        <Routes>
-          <Route path="/map" element={<MAP />} />
-          <Route path="/" element={<HomePage />} />
-        </Routes>
-      </AnimatePresence>
+      <Routes>
+        <Route path="/*" element={<MAP />} />
+        <Route path="/map" element={<MAP />} />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
     </main>
   );
 }
