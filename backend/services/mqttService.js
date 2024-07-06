@@ -4,7 +4,7 @@ const httpServer = require('http').createServer();
 const ws = require('websocket-stream');
 
 const port = 1883;
-const host = '192.168.0.107';
+const host = '192.168.246.181';
 
 ws.createServer({ server: httpServer }, aedes.handle);
 
