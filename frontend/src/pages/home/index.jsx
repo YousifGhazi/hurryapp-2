@@ -9,6 +9,8 @@ import LocationView from "@/components/LocationView";
 import WeahterForecast from "@/components/WeatherForecast";
 import DaysWeatherForecast from "@/components/DaysWeatherForecast";
 import { Link } from "react-router-dom";
+import PageTransition from "@/components/PageTransition";
+
 const HomePage = () => {
   // const aqi = [
   //   {
@@ -26,8 +28,7 @@ const HomePage = () => {
   // ];
 
   return (
-    // <div className="w-full h-full flex flex-col items-center no-scrollbar">
-    <div className="m-auto w-full min-h-[100dvh] max-w-sm bg-gray-50 flex flex-col gap-8 px-4">
+    <div className="m-auto w-full min-h-[100dvh] max-w-sm overflow-x-auto bg-gray-50 flex flex-col gap-8 px-4">
       <nav className="flex w-full items-center p-4">
         <Link to="/map" replace={true}>
           <BackIcon />
@@ -183,7 +184,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* <div className="w-full min-h-[238px] rounded-[8px] bg-white">sdfsd</div> */}
 
       <div className="bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
         <DaysWeatherForecast />
@@ -194,8 +194,8 @@ const HomePage = () => {
         <TipsCarousel />
       </div>
     </div>
-    // </div>
   );
 };
 
-export default HomePage;
+export default PageTransition(HomePage);
+// export default HomePage;

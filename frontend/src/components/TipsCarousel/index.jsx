@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 function TipsCarousel() {
   return (
-    <Carousel className="m-auto w-[90%] max-w-xs">
+    <Carousel className="ml-2 mt- w-full max-w-xs">
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem
