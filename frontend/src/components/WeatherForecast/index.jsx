@@ -25,7 +25,7 @@ function WeahterForecast() {
   }, []);
 
   return (
-    <div>
+    <>
       <h2 className="text-xl font-bold">Weather</h2>
       <div className="flex justify-between">
         <div className=" leading-tight mb-4 mt-2">
@@ -41,7 +41,7 @@ function WeahterForecast() {
           <LuCloudSunRain size={45} color="#5D5FEF" className=" mb-4" />
         </div>
       </div>
-      <Carousel className="m-auto max-w-xs">
+      <Carousel className="m-auto md:m-0 max-w-xs">
         <CarouselContent className="gap-2 mx-auto">
           {forecast.map((reading, index) => (
             <CarouselItem
@@ -65,7 +65,7 @@ function WeahterForecast() {
         <CarouselPrevious className="hidden" />
         <CarouselNext className="hidden" />
       </Carousel>
-    </div>
+    </>
   );
 }
 

@@ -48,7 +48,7 @@ function DaysWeatherForecast() {
     <div className="w-full">
       <h2 className="text-xl font-bold">Weather Forcast</h2>
       <p className="text-[0.625rem] text-gray-600 mb-3">Next 5 days</p>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 md:gap-3">
         {forecast.map((day, index) => (
           <Card
             key={index}
