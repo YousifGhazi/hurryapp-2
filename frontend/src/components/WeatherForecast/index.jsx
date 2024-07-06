@@ -9,7 +9,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 
-function WeahterForecast() {
+function WeahterForecast({ getWeatherIcons }) {
   const [forecast, setForecast] = useState([]);
   useEffect(() => {
     const fetchLocations = async () => {
@@ -35,10 +35,15 @@ function WeahterForecast() {
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
-            <p className="font-bold text-2xl">15</p>
+            <p className="font-bold text-2xl">
+              {(forecast[0] && Math.round(forecast[0]?.main?.temp)) || 0}
+            </p>
             <span className=" text-[11px] font-normal">°C</span>
           </div>
-          <LuCloudSunRain size={45} color="#5D5FEF" className=" mb-4" />
+          {getWeatherIcons(forecast[0]?.weather[0]?.main, {
+            size: 45,
+            color: "#5D5FEF",
+          })}
         </div>
       </div>
       <Carousel className="m-auto md:m-0 max-w-xs">
@@ -50,7 +55,10 @@ function WeahterForecast() {
             >
               <Card>
                 <CardContent className="px-2 py-2 flex flex-col items-center justify-center gap-0">
-                  <LuCloudSunRain size={25} color="#5d5fef" />
+                  {getWeatherIcons(reading.weather[0].main, {
+                    size: 24,
+                    color: "#5D5FEF",
+                  })}
                   <p className="font-medium text-base h-6 pt-2">
                     {Math.round(reading.main.temp)}°C
                   </p>
