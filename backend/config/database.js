@@ -1,7 +1,9 @@
-// config/database.js
 const { Sequelize } = require('sequelize');
+const config = require('./config'); // Ensure correct path
 
-const sequelize = new Sequelize(process.env.DATABASE_CONNECTION, {
+console.log('DATABASE_URL:', config.database.connectionString);
+
+const sequelize = new Sequelize(config.database.connectionString, {
   dialect: 'postgres',
   dialectOptions: {
     ssl: {
