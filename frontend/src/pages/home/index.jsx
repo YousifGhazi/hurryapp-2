@@ -19,7 +19,7 @@ const HomePage = () => {
         </h1>
       </nav>
 
-      <div className="w-full md:w-[40%] bg-white rounded-lg  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
+      <div className="w-full md:w-[40%] bg-white rounded-lg  px-4 py-4 text-lg font-semibold flex flex-col justify-center md:justify-start  gap-1">
         <LocationView />
       </div>
 
@@ -29,7 +29,7 @@ const HomePage = () => {
 
       <div className="flex flex-col w-full md:flex-row-reverse gap-4">
         <AirQuality />
-        <div className="flex flex-col justify-center gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
+        <div className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
           <DaysWeatherForecast />
         </div>
       </div>

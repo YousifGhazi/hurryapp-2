@@ -13,10 +13,34 @@ import { FaFaceMeh } from "react-icons/fa6";
 import { FaFaceFrownOpen } from "react-icons/fa6";
 import { HiLocationMarker } from "react-icons/hi";
 import { FaChevronLeft } from "react-icons/fa6";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import { useEffect } from "react";
 
 function AirQuality() {
+  const WS_URL = "ws://192.168.246.181:8080";
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+    WS_URL,
+    {
+      share: false,
+      shouldReconnect: () => true,
+    }
+  );
+
+  // Run when the connection state (readyState) changes
+  useEffect(() => {
+    console.log("Connection state changed");
+    if (readyState === ReadyState.OPEN) {
+      sendJsonMessage({
+        event: "subscribe",
+        data: {
+          channel: "general-chatroom",
+        },
+      });
+    }
+  }, [readyState]);
+
   return (
-    <div className="w-full max-w-[350px]">
+    <div className="w-full mx-auto max-w-[350px]">
       <div className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
         <p className="text-xl font-bold">Air Quality</p>
 
