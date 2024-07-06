@@ -3,10 +3,12 @@ import { FaFaceSmile } from "react-icons/fa6";
 import { FaFaceMeh } from "react-icons/fa6";
 import { FaFaceFrownOpen } from "react-icons/fa6";
 import { HiLocationMarker } from "react-icons/hi";
+import { FaChevronLeft } from "react-icons/fa6";
 import TipsCarousel from "@/components/TipsCarousel";
 import LocationView from "@/components/LocationView";
 import WeahterForecast from "@/components/WeatherForecast";
 import DaysWeatherForecast from "@/components/DaysWeatherForecast";
+import { Link } from "react-router-dom";
 const HomePage = () => {
   // const aqi = [
   //   {
@@ -27,7 +29,9 @@ const HomePage = () => {
     // <div className="w-full h-full flex flex-col items-center no-scrollbar">
     <div className="m-auto w-full min-h-[100dvh] max-w-sm bg-gray-50 flex flex-col gap-8 px-4">
       <nav className="flex w-full items-center p-4">
-        <BackIcon className="cursor-pointer" />
+        <Link to="/map" replace={true}>
+          <BackIcon />
+        </Link>
         <h1 className="mx-auto text-xl font-bold">Home</h1>
       </nav>
 
