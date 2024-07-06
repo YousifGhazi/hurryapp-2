@@ -21,10 +21,9 @@ const useLocations = create(
           },
         })),
       getActiveLocation: () => {
-        return get((state) =>
-          state.locations.list.find(
-            (location) => location.id === state.locations.activeLocation
-          )
+        const { locations } = get();
+        return locations.list?.find(
+          (location) => location.id === locations.activeLocation
         );
       },
     }),

@@ -6,7 +6,8 @@ import { Routes, Route } from "react-router-dom";
 import useHTTP from "./hooks/useHTTP";
 
 function App() {
-  const { setLocationsList, setActiveLocation } = useLocations();
+  const { setLocationsList, setActiveLocation, locations, getActiveLocation } =
+    useLocations();
   const [sendHTTP, res] = useHTTP();
   // useEffect(() => {
   //   const fetchLocations = async () => {
@@ -35,6 +36,9 @@ function App() {
     setActiveLocation(loc[0].id);
   }, []);
 
+  useEffect(() => {
+    console.log(getActiveLocation());
+  }, [locations]);
   return (
     <main>
       <Routes>
