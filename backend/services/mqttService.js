@@ -79,7 +79,7 @@ aedes.on('publish', function (packet, client) {
             }
         };
 
-        // create();
+        create();
 
         aedes.publish({
             topic: 'client-greetings',
