@@ -39,6 +39,7 @@ function App() {
   useEffect(() => {
     console.log(getActiveLocation());
   }, [locations]);
+
   return (
     <main>
       <Routes>
