@@ -1,14 +1,19 @@
 import axios from "axios";
 import { useState } from "react";
-import client from "../api/axios";
-import useErrorHandling from "./useErrorHandling";
+// import client from "../api/axios";
+// import axios from "axios";
 
+const client = axios.create({
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 function useHTTP() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
 
-  const { errorHandler } = useErrorHandling();
+  // const { errorHandler } = useErrorHandling();
 
   const sendHTTP = async (path, method, body = {}, isMultiPart = false) => {
     setLoading(true);
@@ -66,11 +71,11 @@ function useHTTP() {
         setError(err);
       }
       console.log("❌ useHTTP err ❌", err);
-      const errorDetails = errorHandler(err);
-      console.log("❌ errorDetails", errorDetails);
-      setError(errorDetails);
+      // const errorDetails = errorHandler(err);
+      // console.log("❌ errorDetails", errorDetails);
+      setError(err);
       setLoading(false);
-      return { data: null, error: errorDetails, loading: false };
+      return { data: null, error: err, loading: false };
     }
   };
 

@@ -57,7 +57,7 @@ function LocationsDrawer() {
           </div>
           <DrawerFooter className="flex flex-row w-full">
             <Button className="flex-1 text-white bg-[#02DB5C] hover:bg-[#5ff09b]">
-              <Link className="w-full" to="home">
+              <Link className="w-full" to="/" replace={true}>
                 Go
               </Link>
             </Button>

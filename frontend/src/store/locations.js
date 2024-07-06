@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 const useLocations = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       locations: {},
       setLocations: (locations) => set({ locations }),
       setLocationsList: (locationsList) =>
@@ -21,9 +21,9 @@ const useLocations = create(
           },
         })),
       getActiveLocation: () => {
-        return state.locations.list.find(
-          (location) =>
-            location.id === state.locations.activeLocation.id || null
+        const { locations } = get();
+        return locations.list?.find(
+          (location) => location.id === locations.activeLocation
         );
       },
     }),
