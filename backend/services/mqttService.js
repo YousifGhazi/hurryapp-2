@@ -40,23 +40,34 @@ aedes.on('publish', function (packet, client) {
 
         const data = {
             sensor_id: 1,
-            temperature: payload.temperature,
-            humidity: payload.humidity,
-            concentration: payload.concentration,
-            co: payload.co,
-            Alcohol: payload.Alcohol,
-            CO2: payload.CO2,
-            Toluen: payload.Toluen,
-            NH4: payload.NH4,
-            Aceton: payload.Aceton,
-            particle_level: payload.particle_level,
-            air_quality_label: payload.air_quality_label,
+            temperature: payload.temp, // Ensure payload has `temp`
+            humidity: payload.hum, // Ensure payload has `hum`
+            concentration: payload.concentration || null,
+            co: payload.CO || null,
+            Alcohol: payload.Alcohol || null,
+            CO2: payload.CO2 || null,
+            Toluen: payload.Toluen || null,
+            NH4: payload.NH4 || null,
+            Aceton: payload.Aceton || null,
+            particle_level: payload.PM1 || null, // Adjust according to actual data
+            air_quality_label: payload.air_quality_label || null,
         };
 
         console.log(data);
 
         const create = async () => {
             try {
+                // Validate if sensor_id exists
+                const sensorExists = await prisma.sensor.findUnique({
+                    where: { id: data.sensor_id }
+                });
+
+                if (!sensorExists) {
+                    console.error(`Sensor with ID ${data.sensor_id} does not exist.`);
+                    return;
+                }
+
+                // Create the new reading
                 await prisma.readingSensors.create({
                     data: data
                 });
@@ -66,7 +77,7 @@ aedes.on('publish', function (packet, client) {
             }
         };
 
-        create();
+        // create();
 
         aedes.publish({
             topic: 'client-greetings',

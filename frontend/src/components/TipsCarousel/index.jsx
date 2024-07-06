@@ -9,11 +9,11 @@ import { Card, CardContent } from "@/components/ui/card";
 
 function TipsCarousel() {
   return (
-    <Carousel className="ml-2 mt- w-full max-w-xs">
+    <Carousel className="ml-2 w-[90%]  md:mx-auto">
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem
-            className="basis-[auto] w-[85%] select-none"
+            className="basis-[auto] md:basis-1/3 min-w-[280px] w-[50vw] md:w-full select-none"
             key={index}
           >
             <div className="p-1">
@@ -29,8 +29,8 @@ function TipsCarousel() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="hidden lg:block" />
-      <CarouselNext className="hidden lg:block" />
+      <CarouselPrevious className="hidden md:flex" />
+      <CarouselNext className="hidden md:flex" />
     </Carousel>
   );
 }
