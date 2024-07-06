@@ -73,7 +73,7 @@ function AirQuality() {
         </div>
 
         <div className="my-4">
-          <p className=" font-medium text-xs opacity-75 pb-1">Forecast</p>
+          <p className=" font-medium text-xs opacity-75 pb-3">Forecast</p>
 
           <Carousel className="m-auto max-w-xs">
             <CarouselContent className="gap-2 mx-auto">
@@ -81,13 +81,13 @@ function AirQuality() {
               <CarouselItem
                 className="basis-[auto] w-fit p-0 select-none "
                 key={1}
-                // key={index}
+              // key={index}
               >
                 <Card>
-                  <CardContent className="px-2 py-2 flex flex-col items-center justify-center gap-0">
+                  <CardContent className="px-2 py-2 flex flex-col items-center justify-center gap-1">
                     <p className=" text-[10x] font-light">17:00</p>
                     <SmileFace />
-                    <p className="text-base font-bold flex justify-center gap-1">
+                    <p className="text-base font-bold flex justify-center gap-2">
                       3 <span className=" text-[10px] font-normal">AQI</span>
                     </p>
                   </CardContent>
