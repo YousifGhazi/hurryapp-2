@@ -2,6 +2,8 @@ const aedes = require('aedes')();
 const server = require('net').createServer(aedes.handle);
 const httpServer = require('http').createServer();
 const ws = require('websocket-stream');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 const port = 1883;
 const host = '192.168.246.181';
@@ -28,7 +30,43 @@ aedes.on('publish', function (packet, client) {
     if (client) {
         console.log(`Message from client ${client.id}: ${packet.payload.toString()}`);
 
-        console.log(client.payload);
+        let payload;
+        try {
+            payload = JSON.parse(packet.payload.toString());
+        } catch (e) {
+            console.error('Failed to parse payload:', e);
+            return;
+        }
+
+        const data = {
+            sensor_id: 1,
+            temperature: payload.temperature,
+            humidity: payload.humidity,
+            concentration: payload.concentration,
+            co: payload.co,
+            Alcohol: payload.Alcohol,
+            CO2: payload.CO2,
+            Toluen: payload.Toluen,
+            NH4: payload.NH4,
+            Aceton: payload.Aceton,
+            particle_level: payload.particle_level,
+            air_quality_label: payload.air_quality_label,
+        };
+
+        console.log(data);
+
+        const create = async () => {
+            try {
+                await prisma.readingSensors.create({
+                    data: data
+                });
+                console.log('Data saved successfully:', data);
+            } catch (e) {
+                console.error('Failed to save data:', e);
+            }
+        };
+
+        create();
 
         aedes.publish({
             topic: 'client-greetings',

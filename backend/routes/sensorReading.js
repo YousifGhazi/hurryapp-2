@@ -33,7 +33,7 @@ router.post('/readingSensors', async (req, res) => {
 // GET all reading sensors
 router.get('/readingSensors', async (req, res) => {
   try {
-    const readingSensors = await prisma.readingSensors.findMany();
+    const readingSensors = await prisma.readingSensors.findMany({});
     res.json(readingSensors);
   } catch (error) {
     console.error('Error fetching reading sensors:', error);
