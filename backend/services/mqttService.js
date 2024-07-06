@@ -28,6 +28,8 @@ aedes.on('publish', function (packet, client) {
     if (client) {
         console.log(`Message from client ${client.id}: ${packet.payload.toString()}`);
 
+        console.log(client.payload);
+
         aedes.publish({
             topic: 'client-greetings',
             payload: Buffer.from(`Hi ${client.id}! Welcome to the MQTT broker. You sent: ${packet.payload.toString()}`),

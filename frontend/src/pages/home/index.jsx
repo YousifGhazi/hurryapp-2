@@ -6,7 +6,7 @@ import { HiLocationMarker } from "react-icons/hi";
 import { FaChevronLeft } from "react-icons/fa6";
 import TipsCarousel from "@/components/TipsCarousel";
 import LocationView from "@/components/LocationView";
-import WeahterForecast from "@/components/WeatherForecast";
+import WeahterForecast from "../../components/WeatherForecast";
 import DaysWeatherForecast from "@/components/DaysWeatherForecast";
 import { Link } from "react-router-dom";
 import PageTransition from "@/components/PageTransition";
