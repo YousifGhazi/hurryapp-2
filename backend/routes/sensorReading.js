@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 router.post('/readingSensors', async (req, res) => {
   const { sensor_id, temperature, humidity, concentration, co, Alcohol, CO2, Toluen, NH4, Aceton, particle_level, air_quality_label } = req.body;
   try {
-    const newReadingSensor = await prisma.readingSensor.create({
+    const newReadingSensor = await prisma.readingSensors.create({
       data: {
         sensor_id,
         temperature,
@@ -33,7 +33,7 @@ router.post('/readingSensors', async (req, res) => {
 // GET all reading sensors
 router.get('/readingSensors', async (req, res) => {
   try {
-    const readingSensors = await prisma.readingSensor.findMany();
+    const readingSensors = await prisma.readingSensors.findMany();
     res.json(readingSensors);
   } catch (error) {
     console.error('Error fetching reading sensors:', error);
