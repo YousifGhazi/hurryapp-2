@@ -42,10 +42,10 @@ function WeahterForecast() {
         </div>
       </div>
       <Carousel className="m-auto max-w-xs">
-        <CarouselContent>
+        <CarouselContent className="gap-2 mx-auto">
           {forecast.map((reading, index) => (
             <CarouselItem
-              className="basis-[auto] w-fit pl-2 select-none"
+              className="basis-[auto] w-fit p-0 select-none "
               key={index}
             >
               <Card>
@@ -57,7 +57,6 @@ function WeahterForecast() {
                   <p className="text-[10px] font-light text-gray-400">
                     {reading.dt_txt.split(" ")[1].slice(0, 5)}
                   </p>
-                  {index}
                 </CardContent>
               </Card>
             </CarouselItem>
