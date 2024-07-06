@@ -36,20 +36,24 @@ function AirQuality() {
   }, [socket]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await axios({
-        url: "http://localhost:3000/api/readingSensors",
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }).then(res => setData(res.data))
-        .then(() => setFlag(false))
-        .catch(e => console.log(e));
-    }
+    if (flag) {
+      const fetchData = async () => {
+        try {
+          const res = await axios.get("http://localhost:3000/api/readingSensors", {
+            headers: { "Content-Type": "application/json" },
+          });
+          setData(res.data);
+          setFlag(false);
+        } catch (e) {
+          console.log(e);
+        }
+      };
 
-    fetchData();
+      fetchData();
+    }
   }, [flag]);
 
-  console.log(data);
+  console.log(data, "data");
 
   return (
     <div className="w-full mx-auto max-w-[350px]">
