@@ -18,7 +18,7 @@ model Sensor {
   sensor_type       String
   last_reading_time DateTime?
   location_id       Int
-  location          Location       @relation(fields: [location_id], references: [location_id])
+  location          Location        @relation(fields: [location_id], references: [location_id])
   readings          ReadingSensor[]
 }
 

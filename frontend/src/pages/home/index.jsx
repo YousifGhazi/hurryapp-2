@@ -183,7 +183,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* <div className="w-full min-h-[238px] rounded-[8px] bg-white">sdfsd</div> */}
 
       <div className="bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
         <DaysWeatherForecast />
@@ -194,7 +193,6 @@ const HomePage = () => {
         <TipsCarousel />
       </div>
     </div>
-    // </div>
   );
 };
 
