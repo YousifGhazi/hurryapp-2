@@ -6,9 +6,12 @@ const prisma = new PrismaClient();
 // POST a new location
 router.post('/locations', async (req, res) => {
   const { city_name } = req.body;
+
   try {
     const newLocation = await prisma.location.create({
-      data: { city_name },
+      data: {
+        city_name,
+      },
     });
     res.status(201).json(newLocation);
   } catch (error) {
