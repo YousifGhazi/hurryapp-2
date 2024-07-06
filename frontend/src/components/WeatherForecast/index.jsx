@@ -34,7 +34,7 @@ function WeahterForecast() {
           <p className="text-sm text-gray-400">Feels like 11</p>
         </div>
         <div className="flex items-center gap-3">
-          <p className="font-bold text-2xl">15°C</p>
+          <p className="font-bold text-2xl">15</p>
           <LuCloudSunRain size={45} color="#5d5fef" />
         </div>
       </div>
