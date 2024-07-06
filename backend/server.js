@@ -7,8 +7,12 @@ const PORT = process.env.PORT || 3000;
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const dotenv = require('dotenv').config();
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
+
+
 app.use(express.json());
-console.log('DATABASE_URL:', process.env.DATABASE_URL);
+// console.log('DATABASE_URL:', process.env.DATABASE_URL);
 
 // Check database connection
 async function main() {
