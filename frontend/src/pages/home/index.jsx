@@ -6,8 +6,19 @@ import DaysWeatherForecast from "@/components/DaysWeatherForecast";
 import { Link } from "react-router-dom";
 import PageTransition from "@/components/PageTransition";
 import AirQuality from "@/components/AirQuality";
+import { LuCloudRainWind } from "react-icons/lu";
+import { LuSun } from "react-icons/lu";
+import { LuSnowflake } from "react-icons/lu";
+import { LuCloudSun } from "react-icons/lu";
 
 const HomePage = () => {
+  const getWeatherIcons = (weather, props) => {
+    if (weather === "Rain") return LuCloudRainWind(props);
+    if (weather === "Clear") return LuSun(props);
+    if (weather === "Snow") return LuSnowflake(props);
+    if (weather === "Clouds") return LuCloudSun(props);
+    return LuCloudSun(props);
+  };
   return (
     <div className="flex flex-col md:flex-row md:flex-wrap gap-8 px-4 m-auto w-full min-h-[100dvh] max-w-[1000px] overflow-x-auto bg-gray-50 ">
       <nav className="flex w-full items-center p-4">
@@ -24,13 +35,13 @@ const HomePage = () => {
       </div>
 
       <div className="md:flex-1  bg-white rounded-lg w-full  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
-        <WeahterForecast />
+        <WeahterForecast getWeatherIcons={getWeatherIcons} />
       </div>
 
       <div className="flex flex-col w-full md:flex-row-reverse gap-4">
         <AirQuality />
         <div className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
-          <DaysWeatherForecast />
+          <DaysWeatherForecast getWeatherIcons={getWeatherIcons} />
         </div>
       </div>
 
