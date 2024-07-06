@@ -25,10 +25,12 @@ function DaysWeatherForecast() {
             max = data.list[i + j].main.temp_max;
           }
         }
+
         const date = data.list[i].dt_txt.split(" ")[0];
         forecastList.push({
           min: Math.round(min),
           max: Math.round(max),
+          // fromat date to be like "Sun, 12 Dec"
           date: String(new Date(date))
             .split(" ")
             .slice(0, 3)
