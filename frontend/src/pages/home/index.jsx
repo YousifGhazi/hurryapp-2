@@ -32,7 +32,7 @@ const HomePage = () => {
         <Link to="/map" replace={true}>
           <BackIcon />
         </Link>
-        <h1 className="mx-auto text-xl font-bold">Home</h1>
+        <h1 className="mx-auto text-xl font-semibold">Home</h1>
       </nav>
 
       <div className="bg-white rounded-lg w-full  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
