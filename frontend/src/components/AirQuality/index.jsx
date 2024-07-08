@@ -1,14 +1,4 @@
-import { BackIcon, SmileFace } from "../../components/home page/icons";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
 import { LuCloudSunRain } from "react-icons/lu";
-
 import { HiLocationMarker } from "react-icons/hi";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useEffect, useState } from "react";
