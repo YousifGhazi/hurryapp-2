@@ -1,27 +1,27 @@
 import { useEffect, useRef } from 'react';
 import ProgressBar from 'progressbar.js';
 
+export const getColorByStatus = (status) => {
+    switch (status) {
+        case "Good":
+            return ["#adf2ca", "#02DB5C"];
+        case "Moderate":
+            return ["#fcf4ce", "#FFDE30"];
+        case "Unhealthy for Sensitive Groups":
+            return ["#ffe6c8", "#FEB156"];
+        case "Unhealthy":
+            return ["#eab6b5", "#E53935"];
+        case "Very Unhealthy":
+            return ["#d7a0a0", "#D32F2F"];
+        case "Hazardous":
+            return ["#ba8888", "#B71C1C"];
+        default:
+            return ["#adf2ca", "#02DB5C"];
+    }
+};
+
 const ProgressBarComponent = ({ progress, status }) => {
     const barRef = useRef(null);
-
-    const getColorByStatus = (status) => {
-        switch (status) {
-            case "Good":
-                return ["#adf2ca", "#02DB5C"];
-            case "Moderate":
-                return ["#fcf4ce", "#FFDE30"];
-            case "Unhealthy for Sensitive Groups":
-                return ["#ffe6c8", "#FEB156"];
-            case "Unhealthy":
-                return ["#eab6b5", "#E53935"];
-            case "Very Unhealthy":
-                return ["#d7a0a0", "#D32F2F"];
-            case "Hazardous":
-                return ["#ba8888", "#B71C1C"];
-            default:
-                return ["#adf2ca", "#02DB5C"];
-        }
-    };
 
     useEffect(() => {
         const container = barRef.current;

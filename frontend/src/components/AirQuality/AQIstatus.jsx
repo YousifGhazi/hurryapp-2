@@ -1,9 +1,8 @@
 import { FaFaceSmile, FaFaceMeh, FaFaceFrownOpen } from "react-icons/fa6";
 
-const AQIstatus = ({ aqi, status }) => {
+export const getIcon = (status) => {
     let Icon;
     let textColor;
-
     switch (status) {
         case "Good":
             Icon = <FaFaceSmile size={20} color="#02DB5C" className="mb-[7px]" />;
@@ -34,6 +33,13 @@ const AQIstatus = ({ aqi, status }) => {
             textColor = "inherit";
     }
 
+    return [Icon, textColor];
+}
+
+const AQIstatus = ({ aqi, status }) => {
+
+    const [icon, color] = getIcon(status);
+
     return (
         <>
             <p className="absolute top-[42%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-lighter flex items-center gap-2 text-base">
@@ -41,8 +47,8 @@ const AQIstatus = ({ aqi, status }) => {
                 AQI
             </p>
             <div className="w-full h-[70%] flex items-end justify-center gap-4">
-                {Icon}
-                <span className="text-center font-bold text-2xl" style={{ color: textColor }}>
+                {icon}
+                <span className="text-center font-bold text-2xl" style={{ color: color }}>
                     {status}
                 </span>
             </div>

@@ -16,6 +16,8 @@ import io from "socket.io-client";
 import axios from "axios";
 import ProgressBar from "./ProgressBar";
 import AQIstatus from "./AQIstatus";
+import GasesBar from "./GasesBar";
+import Forecast from "./Forecast";
 
 function AirQuality() {
   const [data, setData] = useState([]);
@@ -84,87 +86,30 @@ function AirQuality() {
 
         <div className="w-full min-h-48 flex justify-center relative">
           <div className="min-w-full flex justify-center mt-4">
-            <ProgressBar className="" progress={15} status={"Good"} />
+            <ProgressBar progress={15} status={"Good"} />
           </div>
           <div className="w-[90%] h-full rounded-t-full absolute top-[60%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center">
             <AQIstatus aqi={aqiInfo.key} status={"Good"} />
           </div>
         </div>
 
-        <div className="w-full flex justify-center">
-          <div className="w-full h-24 flex justify-center">
-            <div className="basis-[35%]  py-4 flex justify-center">
-              <div className="h-full w-[10px] bg-[#adf2ca] rounded-lg z-0 relative">
-                <div className="w-full h-10 absolute bottom-0 right-0 bg-[#02DB5C] rounded-full"></div>
-              </div>
-
-              <div className="flex flex-col gap-1 pl-3 pt-2">
-                <p className=" text-[10px]">CO2 (ppm)</p>
-                {
-                  data[0] &&
-                  <p className=" font-bold text-xl">{data[0].CO2}</p>
-                }
-              </div>
+        <div className="w-full flex justify-center my-8">
+          <div className="w-full h-24 flex flex-col items-center justify-center">
+            <div className="flex w-full">
+              <GasesBar name="CO" value={60} status={"Moderate"} />
+              <GasesBar name="CO2" value={30} status={aqiInfo.value} />
+              <GasesBar name="NH3" value={70} status={aqiInfo.value} />
             </div>
-            <div className="basis-[35%]  py-4 flex justify-center">
-              <div className="h-full w-[10px] bg-[#adf2ca] rounded-lg z-0 relative">
-                <div className="w-full h-10 absolute bottom-0 right-0 bg-[#02DB5C] rounded-full"></div>
-              </div>
-
-              <div className="flex flex-col gap-1 pl-3 pt-2">
-                <p className=" text-[10px]">CO (ppm)</p>
-                {
-                  data[0] &&
-                  <p className=" font-bold text-xl">{data && data[0].co}</p>
-                }
-              </div>
-            </div>
-            <div className="basis-[35%]  py-4 flex justify-center">
-              <div className="h-full w-[10px] bg-[#adf2ca] rounded-lg z-0 relative">
-                <div className="w-full h-10 absolute bottom-0 right-0 bg-[#02DB5C] rounded-full"></div>
-              </div>
-
-              <div className="flex flex-col gap-1 pl-3 pt-2">
-                <p className=" text-[10px]">NH3 (ppm)</p>
-                {
-                  data[0] &&
-                  <p className=" font-bold text-xl">{data && data[0].NH4}</p>
-                }
-              </div>
+            <div className="w-full flex">
+              <GasesBar name="CO" value={10} status={aqiInfo.value} />
+              <GasesBar name="CO2" value={10} status={aqiInfo.value} />
+              <GasesBar name="NH3" value={10} status={aqiInfo.value} />
             </div>
           </div>
         </div>
 
-        <div className="my-4">
-          <p className=" font-medium text-xs opacity-75 pb-3">Forecast</p>
-
-          <Carousel className="m-auto max-w-xs">
-            <CarouselContent className="gap-2 mx-auto">
-              {
-                data && data.map((v, i) => {
-                  return (
-                    <CarouselItem
-                      className="basis-[auto] w-fit p-0 select-none "
-                      key={i}
-                    >
-                      <Card>
-                        <CardContent className="px-2 py-2 flex flex-col items-center justify-center gap-1">
-                          <p className=" text-[10x] font-light">17:00</p>
-                          <SmileFace />
-                          <p className="text-base font-bold flex justify-center gap-2">
-                            {aqiInfo.key} <span className=" text-[10px] font-normal">AQI</span>
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </CarouselItem>
-                  )
-                })
-              }
-            </CarouselContent>
-            <CarouselPrevious className="hidden" />
-            <CarouselNext className="hidden" />
-          </Carousel>
-        </div>
+        {/* need to updated, aqi value from data history */}
+        <Forecast data={data} aqi={aqiInfo.key} status={"Unhealthy"} />
       </div>
     </div>
   );
