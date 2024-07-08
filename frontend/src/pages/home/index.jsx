@@ -10,6 +10,7 @@ import { LuCloudRainWind } from "react-icons/lu";
 import { LuSun } from "react-icons/lu";
 import { LuSnowflake } from "react-icons/lu";
 import { LuCloudSun } from "react-icons/lu";
+import AQIChart from "@/components/AQIChart";
 
 const HomePage = () => {
   const getWeatherIcons = (weather, props) => {
@@ -43,8 +44,12 @@ const HomePage = () => {
       <div className="flex flex-col w-full md:flex-row-reverse gap-4">
         <AirQuality />
         <div className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
-          <DaysWeatherForecast getWeatherIcons={getWeatherIcons} />
+          <AQIChart />
         </div>
+      </div>
+
+      <div className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
+        <DaysWeatherForecast getWeatherIcons={getWeatherIcons} />
       </div>
 
       <div className="w-full min-h-[338px] rounded-[8px] ">
