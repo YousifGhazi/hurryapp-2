@@ -44,8 +44,6 @@ aedes.on('publish', function (packet, client) {
             temperature: payload.temp,
             CO2: payload.CO2 || null,
             particle_level: payload.PM1 || null,
-
-
             concentration: payload.concentration || null,
             co: payload.CO || null,
             Alcohol: payload.Alcohol || null,
@@ -60,7 +58,7 @@ aedes.on('publish', function (packet, client) {
         const create = async () => {
             try {
                 // Validate if sensor_id exists
-                const sensorExists = await prisma.sensor.findUnique({
+                const sensorExists = await prisma.sensors.findUnique({
                     where: { id: data.sensor_id }
                 });
 
