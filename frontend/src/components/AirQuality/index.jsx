@@ -14,30 +14,70 @@ import { FaFaceFrownOpen } from "react-icons/fa6";
 import { HiLocationMarker } from "react-icons/hi";
 import { FaChevronLeft } from "react-icons/fa6";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import io from "socket.io-client";
+import axios from "axios";
 
 function AirQuality() {
-  const WS_URL = "ws://192.168.246.181:8080";
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-    WS_URL,
-    {
-      share: false,
-      shouldReconnect: () => true,
-    }
-  );
+  const [data, setData] = useState([]);
+  const [flag, setFlag] = useState(false);
 
-  // Run when the connection state (readyState) changes
+  const socket = io('http://localhost:8080');
+
   useEffect(() => {
-    console.log("Connection state changed");
-    if (readyState === ReadyState.OPEN) {
-      sendJsonMessage({
-        event: "subscribe",
-        data: {
-          channel: "general-chatroom",
-        },
-      });
+    socket.on('message', (message) => {
+      setFlag(true);
+      console.log('Message from server:', message);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    if (flag) {
+      const fetchData = async () => {
+        try {
+          const res = await axios.get("http://localhost:3000/api/readingSensors", {
+            headers: { "Content-Type": "application/json" },
+          });
+          setData(res.data);
+          setFlag(false);
+        } catch (e) {
+          console.log(e);
+        }
+      };
+
+      fetchData();
     }
-  }, [readyState]);
+  }, [flag]);
+
+  console.log(data, "data");
+
+  const aqi = {
+    4.4: "Good",
+    9.4: "Moderate",
+    12.4: "Unhealthy for Sensitive Groups",
+    15.4: "Unhealthy",
+    30.4: "Very Unhealthy",
+    40.4: "Hazardous",
+    50.4: "Hazardous"
+  }
+
+  const getAQIInfo = (co) => {
+    const keys = Object.keys(aqi).map(Number);
+    for (let i = 0; i < keys.length; i++) {
+      if (co <= keys[i]) {
+        return { key: keys[i], value: aqi[keys[i]] };
+      }
+    }
+    return { key: "Out of range", value: "Value out of range" };
+  };
+
+  const coValue = data[0]?.co;
+  const aqiInfo = getAQIInfo(coValue);
+
 
   return (
     <div className="w-full mx-auto max-w-[350px]">
@@ -49,13 +89,15 @@ function AirQuality() {
             <div className=" absolute w-[80%] h-10 left-0 bottom-0 bg-[#02DB5C]"></div>
             <div className="bg-white w-[90%] h-full rounded-t-full absolute top-[58%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center">
               <p className=" absolute top-[42%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-lighter flex items-center gap-2 text-base">
-                <span className="text-3xl font-semibold">3</span> AQI
+                {
+                  data[0] &&
+                  <span className="text-3xl font-semibold">{aqiInfo.key}</span>
+                }
+                AQI
               </p>
               <div className="w-full h-[75%] flex items-end justify-center gap-4 mt-4">
                 <FaFaceSmile className="mb-1.5" size={20} color="#02DB5C" />
-                <p className="text-center font-bold text-2xl text-[#02DB5C]">
-                  Low
-                </p>
+                <span className="text-center font-bold text-2xl text-[#02DB5C]">{aqiInfo.value}</span>
               </div>
             </div>
           </div>
@@ -69,8 +111,11 @@ function AirQuality() {
               </div>
 
               <div className="flex flex-col gap-1 pl-3 pt-2">
-                <p className=" text-[10px]">O3 (ug/m3)</p>
-                <p className=" font-bold text-xl">53</p>
+                <p className=" text-[10px]">CO2 (ppm)</p>
+                {
+                  data[0] &&
+                  <p className=" font-bold text-xl">{data[0].CO2}</p>
+                }
               </div>
             </div>
             <div className="basis-[35%]  py-4 flex justify-center">
@@ -79,8 +124,11 @@ function AirQuality() {
               </div>
 
               <div className="flex flex-col gap-1 pl-3 pt-2">
-                <p className=" text-[10px]">O3 (ug/m3)</p>
-                <p className=" font-bold text-xl">53</p>
+                <p className=" text-[10px]">CO (ppm)</p>
+                {
+                  data[0] &&
+                  <p className=" font-bold text-xl">{data && data[0].co}</p>
+                }
               </div>
             </div>
             <div className="basis-[35%]  py-4 flex justify-center">
@@ -89,8 +137,11 @@ function AirQuality() {
               </div>
 
               <div className="flex flex-col gap-1 pl-3 pt-2">
-                <p className=" text-[10px]">O3 (ug/m3)</p>
-                <p className=" font-bold text-xl">53</p>
+                <p className=" text-[10px]">NH3 (ppm)</p>
+                {
+                  data[0] &&
+                  <p className=" font-bold text-xl">{data && data[0].NH4}</p>
+                }
               </div>
             </div>
           </div>
@@ -101,23 +152,26 @@ function AirQuality() {
 
           <Carousel className="m-auto max-w-xs">
             <CarouselContent className="gap-2 mx-auto">
-              {/* {forecast.map((reading, index) => ( */}
-              <CarouselItem
-                className="basis-[auto] w-fit p-0 select-none "
-                key={1}
-              // key={index}
-              >
-                <Card>
-                  <CardContent className="px-2 py-2 flex flex-col items-center justify-center gap-1">
-                    <p className=" text-[10x] font-light">17:00</p>
-                    <SmileFace />
-                    <p className="text-base font-bold flex justify-center gap-2">
-                      3 <span className=" text-[10px] font-normal">AQI</span>
-                    </p>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-              {/* ))} */}
+              {
+                data && data.map((v, i) => {
+                  return (
+                    <CarouselItem
+                      className="basis-[auto] w-fit p-0 select-none "
+                      key={i}
+                    >
+                      <Card>
+                        <CardContent className="px-2 py-2 flex flex-col items-center justify-center gap-1">
+                          <p className=" text-[10x] font-light">17:00</p>
+                          <SmileFace />
+                          <p className="text-base font-bold flex justify-center gap-2">
+                            {aqiInfo.key} <span className=" text-[10px] font-normal">AQI</span>
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  )
+                })
+              }
             </CarouselContent>
             <CarouselPrevious className="hidden" />
             <CarouselNext className="hidden" />

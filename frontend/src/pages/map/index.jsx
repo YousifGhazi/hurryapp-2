@@ -12,13 +12,15 @@ function MAP() {
   const map = useRef(null);
   const [lng, setLng] = useState(-70.9);
   const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(0.1);
+  const [zoom, setZoom] = useState(0);
   const router = useNavigate();
+  const imgs = ["taha", "aswar", "aswar"];
+
   const geojson = {
     type: "FeatureCollection",
     features: [
       {
-        type: "Feature",
+        type: "Feature 2",
         properties: {
           message: "Foo",
           imageId: 1011,
@@ -54,13 +56,12 @@ function MAP() {
       center: [lng, lat],
       zoom: zoom,
     });
-
+    let i = 0;
     for (const marker of geojson.features) {
       const el = document.createElement("div");
       const width = marker.properties.iconSize[0];
       const height = marker.properties.iconSize[1];
-      el.className =
-        "marker bg-no-repeat !bg-cover bg-center rounded-[50%] bg-[url('./assets/download.jpeg')]";
+      el.className = `marker bg-no-repeat !bg-cover bg-center rounded-[50%] bg-[url('./assets/taha.jpeg')]`;
       el.style.backgroundImage = hikmaImg;
       el.style.width = `${width}px`;
       el.style.height = `${height}px`;
@@ -84,6 +85,7 @@ function MAP() {
       new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
         .addTo(map.current);
+      i++;
     }
   }, []);
 

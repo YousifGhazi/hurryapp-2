@@ -4,7 +4,7 @@ import { LuCloudSunRain } from "react-icons/lu";
 import { FaLongArrowAltDown } from "react-icons/fa";
 import { FaLongArrowAltUp } from "react-icons/fa";
 
-function DaysWeatherForecast() {
+function DaysWeatherForecast({ getWeatherIcons }) {
   const [forecast, setForecast] = useState([]);
   useEffect(() => {
     const fetchLocations = async () => {
@@ -72,7 +72,7 @@ function DaysWeatherForecast() {
                   color="#fa4040"
                 />
               </p>
-              <LuCloudSunRain size={24} color="#5d5fef" />
+              {getWeatherIcons(day.status, { size: 24, color: "#5d5fef" })}
             </div>
           </Card>
         ))}

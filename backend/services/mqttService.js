@@ -6,7 +6,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const port = 1883;
-const host = '192.168.246.181';
+const host = '192.168.65.181';
 
 ws.createServer({ server: httpServer }, aedes.handle);
 
@@ -40,16 +40,16 @@ aedes.on('publish', function (packet, client) {
 
         const data = {
             sensor_id: 1,
-            temperature: payload.temp, // Ensure payload has `temp`
-            humidity: payload.hum, // Ensure payload has `hum`
+            humidity: payload.hum,
+            temperature: payload.temp,
+            CO2: payload.CO2 || null,
+            particle_level: payload.PM1 || null,
             concentration: payload.concentration || null,
             co: payload.CO || null,
             Alcohol: payload.Alcohol || null,
-            CO2: payload.CO2 || null,
             Toluen: payload.Toluen || null,
             NH4: payload.NH4 || null,
             Aceton: payload.Aceton || null,
-            particle_level: payload.PM1 || null, // Adjust according to actual data
             air_quality_label: payload.air_quality_label || null,
         };
 
@@ -58,7 +58,7 @@ aedes.on('publish', function (packet, client) {
         const create = async () => {
             try {
                 // Validate if sensor_id exists
-                const sensorExists = await prisma.sensor.findUnique({
+                const sensorExists = await prisma.sensors.findUnique({
                     where: { id: data.sensor_id }
                 });
 
@@ -77,7 +77,7 @@ aedes.on('publish', function (packet, client) {
             }
         };
 
-        // create();
+        create();
 
         aedes.publish({
             topic: 'client-greetings',

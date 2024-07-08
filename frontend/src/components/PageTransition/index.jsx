@@ -17,17 +17,17 @@ const PageTransition = (Page, key) => {
     };
 
     return (
-      <AnimatePresence>
-        <motion.div
-          key={key}
-          initial={transition.initial}
-          animate={transition.animate}
-          transition={transition.transition}
-          exit={transition.initial}
-        >
-          <Page />
-        </motion.div>
-      </AnimatePresence>
+      // <AnimatePresence>
+      <motion.div
+        key={key}
+        initial={transition.initial}
+        animate={transition.animate}
+        transition={transition.transition}
+        exit={transition.initial}
+      >
+        <Page />
+      </motion.div>
+      // {/* </AnimatePresence> */}
     );
   };
 };
