@@ -105,7 +105,7 @@ function MAP() {
       <div className="absolute top-0 left-0 m-2 rounded-lg p-4 z-10 text-white bg-[#23374be6]">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
-      <div ref={mapContainer} className="h-screen w-full" />
+      <div ref={mapContainer} className="h-[100dvh] w-full" />
       <LocationsDrawer />
     </div>
   );

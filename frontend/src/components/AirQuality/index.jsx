@@ -1,22 +1,13 @@
-import { BackIcon, SmileFace } from "../../components/home page/icons";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
 import { LuCloudSunRain } from "react-icons/lu";
-import { FaFaceSmile } from "react-icons/fa6";
-import { FaFaceMeh } from "react-icons/fa6";
-import { FaFaceFrownOpen } from "react-icons/fa6";
 import { HiLocationMarker } from "react-icons/hi";
 import { FaChevronLeft } from "react-icons/fa6";
-import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import axios from "axios";
+import ProgressBar from "./ProgressBar";
+import AQIstatus from "./AQIstatus";
+import GasesBar from "./GasesBar";
+import Forecast from "./Forecast";
 
 function AirQuality() {
   const [data, setData] = useState([]);
@@ -78,105 +69,37 @@ function AirQuality() {
   const coValue = data[0]?.co;
   const aqiInfo = getAQIInfo(coValue);
 
-
   return (
     <div className="w-full mx-auto max-w-[350px]">
       <div className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
         <p className="text-xl font-bold">Air Quality</p>
 
         <div className="w-full min-h-48 flex justify-center relative">
-          <div className="bg-[#adf2ca] w-[70%] h-32 rounded-t-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] overflow-hidden">
-            <div className=" absolute w-[80%] h-10 left-0 bottom-0 bg-[#02DB5C]"></div>
-            <div className="bg-white w-[90%] h-full rounded-t-full absolute top-[58%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center">
-              <p className=" absolute top-[42%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-lighter flex items-center gap-2 text-base">
-                {
-                  data[0] &&
-                  <span className="text-3xl font-semibold">{aqiInfo.key}</span>
-                }
-                AQI
-              </p>
-              <div className="w-full h-[75%] flex items-end justify-center gap-4 mt-4">
-                <FaFaceSmile className="mb-1.5" size={20} color="#02DB5C" />
-                <span className="text-center font-bold text-2xl text-[#02DB5C]">{aqiInfo.value}</span>
-              </div>
+          <div className="min-w-full flex justify-center mt-4">
+            <ProgressBar progress={15} status={"Good"} />
+          </div>
+          <div className="w-[90%] h-full rounded-t-full absolute top-[60%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center">
+            <AQIstatus aqi={aqiInfo.key} status={"Good"} />
+          </div>
+        </div>
+
+        <div className="w-full flex justify-center my-8">
+          <div className="w-full h-24 flex flex-col items-center justify-center">
+            <div className="flex w-full">
+              <GasesBar name="CO" value={60} status={"Moderate"} />
+              <GasesBar name="CO2" value={30} status={aqiInfo.value} />
+              <GasesBar name="NH3" value={70} status={aqiInfo.value} />
+            </div>
+            <div className="w-full flex">
+              <GasesBar name="CO" value={10} status={aqiInfo.value} />
+              <GasesBar name="CO2" value={10} status={aqiInfo.value} />
+              <GasesBar name="NH3" value={10} status={aqiInfo.value} />
             </div>
           </div>
         </div>
 
-        <div className="w-full flex justify-center">
-          <div className="w-full h-24 flex justify-center">
-            <div className="basis-[35%]  py-4 flex justify-center">
-              <div className="h-full w-[10px] bg-[#adf2ca] rounded-lg z-0 relative">
-                <div className="w-full h-10 absolute bottom-0 right-0 bg-[#02DB5C] rounded-full"></div>
-              </div>
-
-              <div className="flex flex-col gap-1 pl-3 pt-2">
-                <p className=" text-[10px]">CO2 (ppm)</p>
-                {
-                  data[0] &&
-                  <p className=" font-bold text-xl">{data[0].CO2}</p>
-                }
-              </div>
-            </div>
-            <div className="basis-[35%]  py-4 flex justify-center">
-              <div className="h-full w-[10px] bg-[#adf2ca] rounded-lg z-0 relative">
-                <div className="w-full h-10 absolute bottom-0 right-0 bg-[#02DB5C] rounded-full"></div>
-              </div>
-
-              <div className="flex flex-col gap-1 pl-3 pt-2">
-                <p className=" text-[10px]">CO (ppm)</p>
-                {
-                  data[0] &&
-                  <p className=" font-bold text-xl">{data && data[0].co}</p>
-                }
-              </div>
-            </div>
-            <div className="basis-[35%]  py-4 flex justify-center">
-              <div className="h-full w-[10px] bg-[#adf2ca] rounded-lg z-0 relative">
-                <div className="w-full h-10 absolute bottom-0 right-0 bg-[#02DB5C] rounded-full"></div>
-              </div>
-
-              <div className="flex flex-col gap-1 pl-3 pt-2">
-                <p className=" text-[10px]">NH3 (ppm)</p>
-                {
-                  data[0] &&
-                  <p className=" font-bold text-xl">{data && data[0].NH4}</p>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="my-4">
-          <p className=" font-medium text-xs opacity-75 pb-3">Forecast</p>
-
-          <Carousel className="m-auto max-w-xs">
-            <CarouselContent className="gap-2 mx-auto">
-              {
-                data && data.map((v, i) => {
-                  return (
-                    <CarouselItem
-                      className="basis-[auto] w-fit p-0 select-none "
-                      key={i}
-                    >
-                      <Card>
-                        <CardContent className="px-2 py-2 flex flex-col items-center justify-center gap-1">
-                          <p className=" text-[10x] font-light">17:00</p>
-                          <SmileFace />
-                          <p className="text-base font-bold flex justify-center gap-2">
-                            {aqiInfo.key} <span className=" text-[10px] font-normal">AQI</span>
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </CarouselItem>
-                  )
-                })
-              }
-            </CarouselContent>
-            <CarouselPrevious className="hidden" />
-            <CarouselNext className="hidden" />
-          </Carousel>
-        </div>
+        {/* need to updated, aqi value from data history */}
+        <Forecast data={data} aqi={aqiInfo.key} status={"Unhealthy"} />
       </div>
     </div>
   );
