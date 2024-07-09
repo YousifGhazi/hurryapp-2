@@ -1,42 +1,50 @@
-import { LuCloudSunRain } from "react-icons/lu";
-import { HiLocationMarker } from "react-icons/hi";
-import { FaChevronLeft } from "react-icons/fa6";
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
-import axios from "axios";
-import ProgressBar from "./ProgressBar";
-import AQIstatus from "./AQIstatus";
-import GasesBar from "./GasesBar";
-import Forecast from "./Forecast";
+import { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+import axios from 'axios';
+import ProgressBar from './ProgressBar';
+import AQIstatus from './AQIstatus';
+import GasesBar from './GasesBar';
+import Forecast from './Forecast';
 
 function AirQuality() {
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
 
-  const socket = io('http://localhost:8080');
-
   useEffect(() => {
-    socket.on('message', (message) => {
+    const socket = io('http://localhost:8080');
+
+    socket.on('connect', () => {
+      console.log('Socket connected');
+    });
+
+    socket.on('connect_error', () => {
+      console.log('Socket connection error');
+      setTimeout(() => socket.connect(), 5000);
+    });
+
+    socket.on('fetch', (message) => {
       setFlag(true);
       console.log('Message from server:', message);
     });
 
     return () => {
       socket.disconnect();
+      setFlag(false);
     };
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     if (flag) {
+      console.log('Fetching data...');
       const fetchData = async () => {
         try {
-          const res = await axios.get("http://localhost:3000/api/readingSensors", {
-            headers: { "Content-Type": "application/json" },
+          const res = await axios.get('http://localhost:3000/api/readingSensors', {
+            headers: { 'Content-Type': 'application/json' },
           });
           setData(res.data);
           setFlag(false);
         } catch (e) {
-          console.log(e);
+          console.log('Error fetching data:', e);
         }
       };
 
@@ -44,17 +52,15 @@ function AirQuality() {
     }
   }, [flag]);
 
-  console.log(data, "data");
-
   const aqi = {
-    4.4: "Good",
-    9.4: "Moderate",
-    12.4: "Unhealthy for Sensitive Groups",
-    15.4: "Unhealthy",
-    30.4: "Very Unhealthy",
-    40.4: "Hazardous",
-    50.4: "Hazardous"
-  }
+    4.4: 'Good',
+    9.4: 'Moderate',
+    12.4: 'Unhealthy for Sensitive Groups',
+    15.4: 'Unhealthy',
+    30.4: 'Very Unhealthy',
+    40.4: 'Hazardous',
+    50.4: 'Hazardous',
+  };
 
   const getAQIInfo = (co) => {
     const keys = Object.keys(aqi).map(Number);
@@ -63,7 +69,7 @@ function AirQuality() {
         return { key: keys[i], value: aqi[keys[i]] };
       }
     }
-    return { key: "Out of range", value: "Value out of range" };
+    return { key: 'Out of range', value: 'Value out of range' };
   };
 
   const coValue = data[0]?.co;
@@ -76,17 +82,17 @@ function AirQuality() {
 
         <div className="w-full min-h-48 flex justify-center relative">
           <div className="min-w-full flex justify-center mt-4">
-            <ProgressBar progress={15} status={"Good"} />
+            <ProgressBar progress={15} status={'Good'} />
           </div>
           <div className="w-[90%] h-full rounded-t-full absolute top-[60%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center">
-            <AQIstatus aqi={aqiInfo.key} status={"Good"} />
+            <AQIstatus aqi={aqiInfo.key} status={'Good'} />
           </div>
         </div>
 
         <div className="w-full flex justify-center my-8">
           <div className="w-full h-24 flex flex-col items-center justify-center">
             <div className="flex w-full">
-              <GasesBar name="CO" value={60} status={"Moderate"} />
+              <GasesBar name="CO" value={60} status={'Moderate'} />
               <GasesBar name="CO2" value={30} status={aqiInfo.value} />
               <GasesBar name="NH3" value={70} status={aqiInfo.value} />
             </div>
@@ -98,8 +104,8 @@ function AirQuality() {
           </div>
         </div>
 
-        {/* need to updated, aqi value from data history */}
-        <Forecast data={data} aqi={aqiInfo.key} status={"Unhealthy"} />
+        {/* Need to update AQI value from historical data */}
+        <Forecast data={data} aqi={aqiInfo.key} status={'Unhealthy'} />
       </div>
     </div>
   );
