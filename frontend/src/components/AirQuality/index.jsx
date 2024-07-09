@@ -69,7 +69,7 @@ function AirQuality() {
         return { key: keys[i], value: aqi[keys[i]] };
       }
     }
-    return { key: 'Out of range', value: 'Value out of range' };
+    return { key: 'Out', value: 'Value out of range' };
   };
 
   const coValue = data[0]?.co;
