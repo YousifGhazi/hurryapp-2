@@ -22,7 +22,7 @@ function LocationsDrawer() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <button className="absolute flex items-center justify-center z-10 w-[3rem]  aspect-square text-white bg-[#02DB5C] rounded-[50%] bottom-10 left-4 active:scale-95 duration-200">
+        <button className="absolute flex items-center justify-center z-10 w-[3rem]  aspect-square text-white bg-[#02DB5C] rounded-[50%] bottom-24 sm:bottom-10 left-4 active:scale-95 duration-200">
           <FaMapLocationDot />
         </button>
       </DrawerTrigger>
@@ -43,7 +43,7 @@ function LocationsDrawer() {
                       className={clsx(
                         "flex items-center justify-between p-3 rounded-lg bg-white border-2 cursor-pointer duration-150",
                         location.id === locations.activeLocation &&
-                          "border-green-500"
+                        "border-green-500"
                       )}
                     >
                       <span>{location.address}</span>

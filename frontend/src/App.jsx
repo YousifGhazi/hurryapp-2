@@ -2,13 +2,14 @@ import HomePage from "@/pages/home";
 import MAP from "@/pages/map";
 import useLocations from "@/store/locations";
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import useHTTP from "./hooks/useHTTP";
 import { AnimatePresence } from "framer-motion";
 
 function App() {
   const { setLocationsList, setActiveLocation, locations, getActiveLocation } =
     useLocations();
+  const location = useLocation();
 
   useEffect(() => {
     const loc = [
@@ -28,16 +29,18 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(getActiveLocation());
-  }, [locations]);
+    console.log(location);
+  }, [location]);
 
   return (
     <main className="bg-gray-50">
-      <Routes>
-        <Route path="/*" element={<MAP />} />
-        <Route path="/map" element={<MAP />} />
-        <Route path="/" element={<HomePage />} />
-      </Routes>
+      <AnimatePresence>
+        <Routes location={location} key={location.pathname}>
+          <Route path="/*" element={<MAP />} />
+          <Route path="/map" element={<MAP />} />
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </AnimatePresence>
     </main>
   );
 }

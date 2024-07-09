@@ -1,7 +1,7 @@
 import { AnimatePresence, delay, motion } from "framer-motion";
 import HomePage from "@/pages/home";
 
-const PageTransition = (Page, key) => {
+const PageTransition = (Page, options) => {
   return function TransitionWrapper(props) {
     const transition = {
       initial: {
@@ -11,15 +11,13 @@ const PageTransition = (Page, key) => {
         opacity: 1,
       },
       transition: {
-        duration: 2,
-        delay: 1,
+        duration: 1,
       },
     };
 
     return (
-      // <AnimatePresence>
       <motion.div
-        key={key}
+        key={options?.key}
         initial={transition.initial}
         animate={transition.animate}
         transition={transition.transition}
@@ -27,7 +25,6 @@ const PageTransition = (Page, key) => {
       >
         <Page />
       </motion.div>
-      // {/* </AnimatePresence> */}
     );
   };
 };
