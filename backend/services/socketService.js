@@ -12,22 +12,17 @@ const io = socketIo(server, {
 io.on('connection', (socket) => {
     console.log('User connected');
 
-    // Emit a welcome message when a user connects
-    socket.emit('message', 'Welcome to the WebSocket server!');
+    socket.join('clock');
 
-    // Listen for messages from clients
-    socket.on('message', (message) => {
-        console.log('Message received:', message);
-
-        // Broadcast the message to all connected clients
-        io.emit('message', message);
-    });
-
-    // Listen for disconnection
     socket.on('disconnect', () => {
         console.log('User disconnected');
     });
 });
+
+
+setInterval(() => {
+    io.to('clock').emit('fetch');
+}, 5000);
 
 server.listen(8080, () => {
     console.log(`Server is running on port 8080`);

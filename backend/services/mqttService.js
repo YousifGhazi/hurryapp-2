@@ -6,7 +6,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const port = 1883;
-const host = '192.168.0.100';
+const host = '0.0.0.0';
 
 ws.createServer({ server: httpServer }, aedes.handle);
 
