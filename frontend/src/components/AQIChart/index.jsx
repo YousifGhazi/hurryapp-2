@@ -37,7 +37,8 @@ function WeahterForecast() {
 
   return (
     <>
-      <h2 className="text-xl font-bold">Weather</h2>
+      <h2 className="text-xl font-bold">AQ Forcast</h2>
+      <p className="text-[0.625rem] text-gray-600 mb-3">Last 7 days</p>
       <div className="py-4 ">
         <div className="mx-auto bg-white bg-repeating-linear bg-[length:30px_30px] h-[150px] w-full max-w-[500px]">
           <div className="flex  h-full w-full justify-between">
