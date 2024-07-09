@@ -7,8 +7,7 @@ import useHTTP from "./hooks/useHTTP";
 import { AnimatePresence } from "framer-motion";
 
 function App() {
-  const { setLocationsList, setActiveLocation, locations, getActiveLocation } =
-    useLocations();
+  const { setLocationsList, setActiveLocation } = useLocations();
   const location = useLocation();
 
   useEffect(() => {
