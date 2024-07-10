@@ -3,13 +3,14 @@ const location = require('./routes/location');
 const sensor = require('./routes/sensor');
 const sensorReading = require('./routes/sensorReading');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const dotenv = require('dotenv').config();
 const mqttServer = require('./services/mqttService');
 const ws = require('./services/socketService')
 const cors = require('cors');
+const mqttClient = require('./services/mqttClient');
 
 
 app.use(
