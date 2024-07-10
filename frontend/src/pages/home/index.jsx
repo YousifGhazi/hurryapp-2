@@ -46,7 +46,7 @@ const HomePage = () => {
       </div>
 
       <div className="flex flex-col w-full md:flex-row-reverse gap-4">
-        <AirQuality />
+        {/* <AirQuality /> */}
         <Card className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
           <AQIChart />
         </Card>
@@ -57,7 +57,9 @@ const HomePage = () => {
       </Card>
 
       <div className="w-full min-h-[338px] rounded-[8px] ">
-        <h2 className="text-xl font-bold px-4 py-4">Tips</h2>
+        <h2 className="text-xl font-bold px-4 py-4">
+          Tips <span className="text-gray-400 text-sm">(AI)</span>
+        </h2>
         <TipsCarousel />
       </div>
     </div>

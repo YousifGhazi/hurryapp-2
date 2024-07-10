@@ -1,8 +1,7 @@
-import { AnimatePresence, delay, motion } from "framer-motion";
-import HomePage from "@/pages/home";
+import { motion } from "framer-motion";
 
 const PageTransition = (Page, options) => {
-  return function TransitionWrapper(props) {
+  return function TransitionWrapper() {
     const transition = {
       initial: {
         opacity: 0,
