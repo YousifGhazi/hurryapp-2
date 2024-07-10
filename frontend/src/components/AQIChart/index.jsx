@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 
-function WeahterForecast() {
+function AQIChart() {
   const [AQIHisory, setAQIHisory] = useState([]);
   useEffect(() => {
     setAQIHisory([2, 5, 7, 4, 3, 8, 2]);
@@ -44,6 +44,7 @@ function WeahterForecast() {
           <div className="flex  h-full w-full justify-between">
             {AQIHisory.map((reading, index) => (
               <div
+                key={index}
                 className={clsx(
                   "relative self-end  h-[200xp] w-[11%] max-w-[45px] rounded-sm",
                   getChartColor("line", reading)
@@ -63,8 +64,11 @@ function WeahterForecast() {
             ))}
           </div>
           <div className="flex h-full w-full justify-between">
-            {AQIHisory.map((reading) => (
-              <p className="w-[12%] max-w-[45px] mt-1 font-[500] text-black opacity-40 text-[10px]  text-center">
+            {AQIHisory.map((reading, index) => (
+              <p
+                key={index}
+                className="w-[12%] max-w-[45px] mt-1 font-[500] text-black opacity-40 text-[10px]  text-center"
+              >
                 SUN
               </p>
             ))}
@@ -75,4 +79,4 @@ function WeahterForecast() {
   );
 }
 
-export default WeahterForecast;
+export default AQIChart;

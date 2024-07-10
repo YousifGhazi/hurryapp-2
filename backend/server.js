@@ -3,15 +3,13 @@ const location = require('./routes/location');
 const sensor = require('./routes/sensor');
 const sensorReading = require('./routes/sensorReading');
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001; // Changed from 3000 to 3001
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const dotenv = require('dotenv').config();
 const mqttServer = require('./services/mqttService');
-const ws = require('./services/socketService')
+const ws = require('./services/socketService');
 const cors = require('cors');
-const mqttClient = require('./services/mqttClient');
-
 
 app.use(
     cors({
@@ -21,8 +19,6 @@ app.use(
     })
 );
 app.use(express.json());
-// console.log('DATABASE_URL:', process.env.DATABASE_URL);
-
 
 // Check database connection
 async function main() {
@@ -37,7 +33,6 @@ async function main() {
 main().catch((error) => {
     console.error('Error starting application:', error);
 });
-
 
 // Routes
 app.use('/api', location);
