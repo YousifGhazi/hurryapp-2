@@ -1,6 +1,3 @@
-import { LuCloudSunRain } from "react-icons/lu";
-import { HiLocationMarker } from "react-icons/hi";
-import { FaChevronLeft } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import axios from "axios";
@@ -8,43 +5,56 @@ import ProgressBar from "./ProgressBar";
 import AQIstatus from "./AQIstatus";
 import GasesBar from "./GasesBar";
 import Forecast from "./Forecast";
+import { Card } from "../ui/card";
 
 function AirQuality() {
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
 
-  const socket = io('http://localhost:8080');
-
   useEffect(() => {
-    socket.on('message', (message) => {
+    const socket = io("http://localhost:8080");
+
+    socket.on("connect", () => {
+      console.log("Socket connected");
+    });
+
+    socket.on("connect_error", () => {
+      console.log("Socket connection error");
+      setTimeout(() => socket.connect(), 5000);
+    });
+
+    socket.on("fetch", (message) => {
       setFlag(true);
-      console.log('Message from server:', message);
+      console.log("Message from server:", message);
     });
 
     return () => {
       socket.disconnect();
+      setFlag(false);
     };
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     if (flag) {
+      console.log("Fetching data...");
       const fetchData = async () => {
         try {
-          const res = await axios.get("http://localhost:3000/api/readingSensors", {
-            headers: { "Content-Type": "application/json" },
-          });
+          const res = await axios.get(
+            "http://localhost:3000/api/readingSensors",
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          );
           setData(res.data);
           setFlag(false);
         } catch (e) {
-          console.log(e);
+          console.log("Error fetching data:", e);
         }
       };
 
       fetchData();
     }
   }, [flag]);
-
-  console.log(data, "data");
 
   const aqi = {
     4.4: "Good",
@@ -53,8 +63,8 @@ function AirQuality() {
     15.4: "Unhealthy",
     30.4: "Very Unhealthy",
     40.4: "Hazardous",
-    50.4: "Hazardous"
-  }
+    50.4: "Hazardous",
+  };
 
   const getAQIInfo = (co) => {
     const keys = Object.keys(aqi).map(Number);
@@ -63,15 +73,15 @@ function AirQuality() {
         return { key: keys[i], value: aqi[keys[i]] };
       }
     }
-    return { key: "Out of range", value: "Value out of range" };
+    return { key: 'Out', value: 'Value out of range' };
   };
 
   const coValue = data[0]?.co;
   const aqiInfo = getAQIInfo(coValue);
 
   return (
-    <div className="w-full mx-auto max-w-[350px]">
-      <div className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
+    <div className="w-full mx-auto ">
+      <Card className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
         <p className="text-xl font-bold">Air Quality</p>
 
         <div className="w-full min-h-48 flex justify-center relative">
@@ -98,9 +108,9 @@ function AirQuality() {
           </div>
         </div>
 
-        {/* need to updated, aqi value from data history */}
+        {/* Need to update AQI value from historical data */}
         <Forecast data={data} aqi={aqiInfo.key} status={"Unhealthy"} />
-      </div>
+      </Card>
     </div>
   );
 }

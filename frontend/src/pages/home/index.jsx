@@ -11,6 +11,7 @@ import { LuSun } from "react-icons/lu";
 import { LuSnowflake } from "react-icons/lu";
 import { LuCloudSun } from "react-icons/lu";
 import AQIChart from "@/components/AQIChart";
+import { Card } from "@/components/ui/card";
 
 const HomePage = () => {
   const getWeatherIcons = (weather, props) => {
@@ -26,31 +27,35 @@ const HomePage = () => {
         <Link to="/map" replace={true}>
           <BackIcon />
         </Link>
-        <h1 className="mx-auto text-xl font-semibold md:p-4 md:text-2xl">
+        <h1
+          Forcast
+          className="mx-auto text-xl font-semibold md:p-4 md:text-2xl"
+        >
           Home
         </h1>
       </nav>
 
       <div className="flex flex-col md:flex-row w-full gap-4">
-        <div className="w-full md:w-[40%] bg-white rounded-lg  px-4 py-4 text-lg font-semibold flex flex-col justify-center md:justify-start  gap-1">
+        <Card className="w-full md:w-[40%] bg-white rounded-lg  px-4 py-4 text-lg font-semibold flex flex-col justify-center md:justify-start  gap-1">
           <LocationView />
-        </div>
+        </Card>
 
-        <div className="md:flex-1  bg-white rounded-lg w-full  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
+        <Card className="md:flex-1  bg-white rounded-lg w-full  px-4 py-4 text-lg font-semibold flex flex-col justify-center gap-1">
           <WeahterForecast getWeatherIcons={getWeatherIcons} />
-        </div>
+        </Card>
       </div>
 
       <div className="flex flex-col w-full md:flex-row-reverse gap-4">
         <AirQuality />
-        <div className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
-          <AQIChart />
-        </div>
       </div>
 
-      <div className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
+      <Card className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
+        <AQIChart />
+      </Card>
+
+      <Card className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
         <DaysWeatherForecast getWeatherIcons={getWeatherIcons} />
-      </div>
+      </Card>
 
       <div className="w-full min-h-[338px] rounded-[8px] ">
         <h2 className="text-xl font-bold px-4 py-4">Tips</h2>

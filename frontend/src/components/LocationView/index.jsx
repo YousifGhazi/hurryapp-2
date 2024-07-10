@@ -2,15 +2,18 @@ import useLocationsStore from "@/store/locations";
 
 function LocationView() {
   const { getActiveLocation } = useLocationsStore();
-  const { address, coordinates } = getActiveLocation();
+
+  const activeLocation = getActiveLocation();
 
   return (
     <div className="flex flex-col h-full">
-      {address && (
+      {activeLocation?.address && (
         <>
-          <h2 className="font-semibold text-lg">{address.split(", ")?.[0]}</h2>
+          <h2 className="font-semibold text-lg">
+            {activeLocation?.address.split(", ")?.[0]}
+          </h2>
           <p className="text-gray-600 text-sm font-normal my-1">
-            {address.split(", ")?.[1]}
+            {activeLocation?.address.split(", ")?.[1]}
           </p>
         </>
       )}
@@ -18,10 +21,10 @@ function LocationView() {
         <p>{new Date().toUTCString()}</p>
       </div>
       <div className="hidden md:block mt-12 text-sm">
-        {coordinates && (
+        {activeLocation?.coordinates && (
           <>
-            <p className="mt-2">Lang: {coordinates?.[0]}</p>
-            <p className="mt-2">Late: {coordinates?.[1]}</p>
+            <p className="mt-2">Lang: {activeLocation?.coordinates?.[0]}</p>
+            <p className="mt-2">Late: {activeLocation?.coordinates?.[1]}</p>
           </>
         )}
       </div>
