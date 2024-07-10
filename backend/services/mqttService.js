@@ -5,6 +5,7 @@ const ws = require('websocket-stream');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+
 const port = 1883;
 const host = '192.168.0.100';
 
