@@ -13,14 +13,14 @@ function App() {
   useEffect(() => {
     const loc = [
       {
-        address: "Al Hikma, Baghdad",
+        address: "Hub200, Baghdad",
         id: 1,
-        coordinates: [43.8473, 33.1812],
+        coordinates: [33.314145062834854, 44.422286165730895],
       },
       {
-        address: "54 street, AL Basra",
-        id: 2,
-        coordinates: [44.32450116569708, 33.319625821412195],
+        address: "Test, Baghdad",
+        id: 3,
+        coordinates: [34.314145062834854, 45.422286165730895],
       },
     ];
     setLocationsList(loc);
