@@ -73,14 +73,14 @@ function AirQuality() {
         return { key: keys[i], value: aqi[keys[i]] };
       }
     }
-    return { key: "Out of range", value: "Value out of range" };
+    return { key: 'Out', value: 'Value out of range' };
   };
 
   const coValue = data[0]?.co;
   const aqiInfo = getAQIInfo(coValue);
 
   return (
-    <div className="w-full mx-auto max-w-[350px]">
+    <div className="w-full mx-auto ">
       <Card className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
         <p className="text-xl font-bold">Air Quality</p>
 

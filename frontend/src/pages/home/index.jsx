@@ -46,11 +46,12 @@ const HomePage = () => {
       </div>
 
       <div className="flex flex-col w-full md:flex-row-reverse gap-4">
-        {/* <AirQuality /> */}
-        <Card className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
-          <AQIChart />
-        </Card>
+        <AirQuality />
       </div>
+
+      <Card className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
+        <AQIChart />
+      </Card>
 
       <Card className="flex flex-col justify-center md:justify-start gap-1 md:flex-1 bg-white rounded-lg w-full px-4 py-4 text-lg font-semibold ">
         <DaysWeatherForecast getWeatherIcons={getWeatherIcons} />

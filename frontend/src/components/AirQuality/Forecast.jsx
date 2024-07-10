@@ -11,7 +11,7 @@ const Forecast = ({ data, aqi, status }) => {
         <div className="my-8">
             <p className=" font-medium text-xs opacity-75 pb-3">Forecast</p>
 
-            <Carousel className="m-auto max-w-xs">
+            <Carousel className="m-auto">
                 <CarouselContent className="gap-2 mx-auto">
                     {
                         data && data.map((v, i) => {
