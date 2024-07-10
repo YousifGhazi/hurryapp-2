@@ -4,6 +4,7 @@ import hikmaImg from "../../assets/download.jpeg";
 import LocationsDrawer from "@/components/Map/LocatinosDrawer";
 import { useNavigate } from "react-router-dom";
 import PageTransition from "@/components/PageTransition";
+import useLocations from "@/store/locations";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoieW91c2lmLW9kYXkiLCJhIjoiY2x5OGp0cWxnMDd3OTJscGhmbWk5eDNxdSJ9.FASD-xbWAHmgzayQNOcHqQ";
@@ -14,26 +15,11 @@ function MAP() {
   const [lat, setLat] = useState(42.35);
   const [zoom, setZoom] = useState(0);
   const router = useNavigate();
-  const imgs = ["taha", "aswar", "aswar"];
 
-  const geojson = {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature 2",
-        properties: {
-          message: "Foo",
-          imageId: 1011,
-          iconSize: [40, 40],
-        },
-        geometry: {
-          type: "Point",
-          coordinates: [44.3425, 33.2982],
-        },
-      },
-    ],
-  };
-  const jumpTo = (lng, lat, zoom, speed = 0.5) => {
+  const location = useLocations((state) => state.locations);
+  const setActiveLocation = useLocations((state) => state.setActiveLocation);
+
+  const jumpTo = (lat, lng, zoom, speed = 0.5) => {
     map.current.flyTo({
       center: [lng, lat],
       zoom: zoom,
@@ -49,43 +35,39 @@ function MAP() {
   };
 
   useEffect(() => {
-    if (map.current) return; // initialize map only once
+    if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
       center: [lng, lat],
       zoom: zoom,
     });
-    let i = 0;
-    for (const marker of geojson.features) {
-      const el = document.createElement("div");
-      const width = marker.properties.iconSize[0];
-      const height = marker.properties.iconSize[1];
-      el.className = `marker bg-no-repeat !bg-cover bg-center rounded-[50%] bg-[url('./assets/taha.jpeg')]`;
-      el.style.backgroundImage = hikmaImg;
-      el.style.width = `${width}px`;
-      el.style.height = `${height}px`;
-      el.style.backgroundSize = "100%";
-      el.style.display = "block";
-      el.style.border = "none";
-      el.style.borderRadius = "50%";
-      el.style.cursor = "pointer";
-      el.style.padding = 0;
+    if (location?.list) {
+      for (const marker of location.list) {
+        console.log(marker);
+        const el = document.createElement("div");
+        const width = 40;
+        const height = 40;
+        el.className = `marker bg-no-repeat !bg-cover bg-center rounded-[50%] bg-[url('./assets/hub200.jpeg')]`;
+        el.style.width = `${width}px`;
+        el.style.height = `${height}px`;
+        el.style.backgroundSize = "100%";
+        el.style.display = "block";
+        el.style.border = "none";
+        el.style.borderRadius = "50%";
+        el.style.cursor = "pointer";
+        el.style.padding = 0;
 
-      el.addEventListener("click", () => {
-        jumpTo(
-          marker.geometry.coordinates[0],
-          marker.geometry.coordinates[1],
-          15,
-          1
-        );
-        transformPage();
-      });
+        el.addEventListener("click", () => {
+          jumpTo(marker.coordinates[1], marker.coordinates[0], 15, 1);
+          setActiveLocation(marker.id);
+          transformPage();
+        });
 
-      new mapboxgl.Marker(el)
-        .setLngLat(marker.geometry.coordinates)
-        .addTo(map.current);
-      i++;
+        new mapboxgl.Marker(el)
+          .setLngLat(marker.coordinates.reverse())
+          .addTo(map.current);
+      }
     }
   }, []);
 
@@ -96,7 +78,7 @@ function MAP() {
       setZoom(map.current.getZoom().toFixed(2));
     });
     map.current.on("load", () => {
-      jumpTo(43.8473, 33.1812, 5);
+      jumpTo(33.1812, 43.8473, 5);
     });
   }, []);
 
