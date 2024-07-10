@@ -8,17 +8,10 @@ const client = mqtt.connect(brokerUrl);
 
 // Define a sample payload to publish
 const samplePayload = {
-    hum: 55,
-    temp: 22,
-    CO2: 400,
-    PM1: 10,
-    concentration: 50,
-    CO: 0,
-    Alcohol: 0,
-    Toluen: 0,
-    NH4: 0,
-    Aceton: 0,
-    air_quality_label: 'Good'
+    hum: "",
+    temp: "",
+    co2: "",
+    pm25: "",
 };
 
 // Convert the payload to a JSON string

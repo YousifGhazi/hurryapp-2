@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
 
 setInterval(() => {
     io.to('clock').emit('fetch');
-}, 5000);
+}, 1000);
 
 server.listen(8080, () => {
     console.log(`Server is running on port 8080`);

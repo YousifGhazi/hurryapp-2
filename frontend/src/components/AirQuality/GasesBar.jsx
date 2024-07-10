@@ -3,7 +3,7 @@ import { getColorByStatus } from './ProgressBar';
 
 const GasesBar = ({ name, value, status }) => {
     const color = getColorByStatus(status);
-    const percentage = value; // Assuming value is already in the range of 0 to 100
+    const percentage = value;
     const barRef = useRef(null);
 
     useEffect(() => {

@@ -56,7 +56,7 @@ const ProgressBarComponent = ({ progress, status }) => {
       },
       step: (state, bar) => {
         bar.path.setAttribute("stroke", color);
-        var value = Math.round((bar.value() * progress * 50) / 100);
+        var value = Math.round((bar.value() * progress * 200) / 200);
         if (value === 0) {
           bar.setText("");
         } else {
@@ -66,7 +66,7 @@ const ProgressBarComponent = ({ progress, status }) => {
       },
     });
 
-    bar.animate(progress / 50);
+    bar.animate(progress / 200);
 
     return () => {
       bar.destroy();

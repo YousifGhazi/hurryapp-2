@@ -5,7 +5,6 @@ const ws = require('websocket-stream');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-
 const port = 1883;
 const host = '0.0.0.0';
 
@@ -40,45 +39,16 @@ aedes.on('publish', function (packet, client) {
         }
 
         const data = {
-            sensor_id: 1,
-            humidity: payload.hum,
-            temperature: payload.temp,
-            CO2: payload.CO2 || null,
-            particle_level: payload.PM1 || null,
-            concentration: payload.concentration || null,
-            co: payload.CO || null,
-            Alcohol: payload.Alcohol || null,
-            Toluen: payload.Toluen || null,
-            NH4: payload.NH4 || null,
-            Aceton: payload.Aceton || null,
-            air_quality_label: payload.air_quality_label || null,
+            sensor_id: payload.sensor_id,
+            hum: payload.hum,
+            temp: payload.temp,
+            co2: payload.co2,
+            pm25: payload.pm25
         };
 
         console.log(data);
 
-        const create = async () => {
-            try {
-                // Validate if sensor_id exists
-                const sensorExists = await prisma.sensors.findUnique({
-                    where: { id: data.sensor_id }
-                });
-
-                if (!sensorExists) {
-                    console.error(`Sensor with ID ${data.sensor_id} does not exist.`);
-                    return;
-                }
-
-                // Create the new reading
-                await prisma.readingSensors.create({
-                    data: data
-                });
-                console.log('Data saved successfully:', data);
-            } catch (e) {
-                console.error('Failed to save data:', e);
-            }
-        };
-
-        create();
+        create(data);
 
         aedes.publish({
             topic: 'client-greetings',
@@ -92,6 +62,43 @@ aedes.on('publish', function (packet, client) {
 server.listen(port, host, function () {
     console.log(`Aedes MQTT broker listening on ${host}:${port}`);
 });
+
+
+const create = async (data) => {
+    try {
+        const { sensor_id, temp, hum, co2, pm25 } = data;
+
+        let sensor = await prisma.sensors.findUnique({
+            where: {
+                id: sensor_id
+            }
+        });
+
+        if (!sensor) {
+            sensor = await prisma.sensors.create({
+                data: {
+                    id: sensor_id,
+                    lat: 33.318544,
+                    long: 44.415127
+                }
+            });
+        }
+
+        const reading = await prisma.readingSensors.create({
+            data: {
+                sensor_id: sensor.id,
+                temp: temp,
+                hum: hum,
+                co2: co2,
+                pm25: pm25
+            }
+        });
+
+        console.log('Data saved successfully:', reading);
+    } catch (e) {
+        console.error('Failed to save data:', e);
+    }
+};
 
 
 module.exports = server;

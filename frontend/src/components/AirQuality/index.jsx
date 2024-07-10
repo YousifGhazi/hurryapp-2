@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 import ProgressBar from "./ProgressBar";
@@ -8,7 +8,7 @@ import Forecast from "./Forecast";
 import { Card } from "../ui/card";
 
 function AirQuality() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(0);
   const [flag, setFlag] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function AirQuality() {
       const fetchData = async () => {
         try {
           const res = await axios.get(
-            "http://localhost:3000/api/readingSensors",
+            "http://localhost:3001/api/readingSensors",
             {
               headers: { "Content-Type": "application/json" },
             }
@@ -56,28 +56,54 @@ function AirQuality() {
     }
   }, [flag]);
 
-  const aqi = {
-    4.4: "Good",
-    9.4: "Moderate",
-    12.4: "Unhealthy for Sensitive Groups",
-    15.4: "Unhealthy",
-    30.4: "Very Unhealthy",
-    40.4: "Hazardous",
-    50.4: "Hazardous",
-  };
+  const getAQIInfo = (co2) => {
+    const co2Breakpoints = [
+      { cLow: 0, cHigh: 600, iLow: 0, iHigh: 50 },
+      { cLow: 601, cHigh: 1200, iLow: 51, iHigh: 100 },
+      { cLow: 1201, cHigh: 1800, iLow: 101, iHigh: 150 },
+      { cLow: 1801, cHigh: 2400, iLow: 151, iHigh: 200 },
+      { cLow: 2401, cHigh: 3200, iLow: 201, iHigh: 300 },
+      { cLow: 3201, cHigh: 4000, iLow: 301, iHigh: 500 }
+    ];
 
-  const getAQIInfo = (co) => {
-    const keys = Object.keys(aqi).map(Number);
-    for (let i = 0; i < keys.length; i++) {
-      if (co <= keys[i]) {
-        return { key: keys[i], value: aqi[keys[i]] };
+    const calculateCO2AQI = (co2) => {
+      for (let i = 0; i < co2Breakpoints.length; i++) {
+        const { cLow, cHigh, iLow, iHigh } = co2Breakpoints[i];
+        if (co2 >= cLow && co2 <= cHigh) {
+          const aqi = ((iHigh - iLow) / (cHigh - cLow)) * (co2 - cLow) + iLow;
+          return Math.round(aqi);
+        }
       }
-    }
-    return { key: 'Out', value: 'Value out of range' };
+      return '0';
+    };
+
+    const aqi = calculateCO2AQI(co2);
+    const category = getCategory(aqi);
+
+    return { aqi, category };
   };
 
-  const coValue = data[0]?.co;
-  const aqiInfo = getAQIInfo(coValue);
+  const getCategory = (aqi) => {
+    if (aqi >= 0 && aqi <= 50) {
+      return 'Good';
+    } else if (aqi >= 51 && aqi <= 100) {
+      return 'Moderate';
+    } else if (aqi >= 101 && aqi <= 150) {
+      return 'Unhealthy for Sensitive Groups';
+    } else if (aqi >= 151 && aqi <= 200) {
+      return 'Unhealthy';
+    } else if (aqi >= 201 && aqi <= 300) {
+      return 'Very Unhealthy';
+    } else if (aqi >= 301 && aqi <= 500) {
+      return 'Hazardous';
+    } else {
+      return 'Value out of range';
+    }
+  };
+
+  const { aqi, category } = useMemo(() => getAQIInfo(data.co2), [data]);
+
+  console.log(data);
 
   return (
     <div className="w-full mx-auto ">
@@ -86,30 +112,30 @@ function AirQuality() {
 
         <div className="w-full min-h-48 flex justify-center relative">
           <div className="min-w-full flex justify-center mt-4">
-            <ProgressBar progress={15} status={"Good"} />
+            <ProgressBar progress={aqi} status={category} />
           </div>
           <div className="w-[90%] h-full rounded-t-full absolute top-[60%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center">
-            <AQIstatus aqi={aqiInfo.key} status={"Good"} />
+            <AQIstatus aqi={aqi} status={category} />
           </div>
         </div>
 
         <div className="w-full flex justify-center my-8">
           <div className="w-full h-24 flex flex-col items-center justify-center">
             <div className="flex w-full">
-              <GasesBar name="CO" value={60} status={"Moderate"} />
-              <GasesBar name="CO2" value={30} status={aqiInfo.value} />
-              <GasesBar name="NH3" value={70} status={aqiInfo.value} />
+              <GasesBar name="CO" value={60} status={category} />
+              <GasesBar name="CO2" value={10} status={category} />
+              <GasesBar name="NH3" value={70} status={category} />
             </div>
             <div className="w-full flex">
-              <GasesBar name="CO" value={10} status={aqiInfo.value} />
-              <GasesBar name="CO2" value={10} status={aqiInfo.value} />
-              <GasesBar name="NH3" value={10} status={aqiInfo.value} />
+              <GasesBar name="CO" value={10} status={category} />
+              <GasesBar name="Taulen" value={10} status={category} />
+              <GasesBar name="Alcohol" value={10} status={category} />
             </div>
           </div>
         </div>
 
-        {/* Need to update AQI value from historical data */}
-        <Forecast data={data} aqi={aqiInfo.key} status={"Unhealthy"} />
+        {/* Update AQI value from historical data */}
+        {/* <Forecast data={data} aqi={aqiInfo.aqi} status={aqiInfo.category} /> */}
       </Card>
     </div>
   );

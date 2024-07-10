@@ -47,7 +47,6 @@ function TipsCarousel() {
     },
   ];
 
-  /// ############# disabled so it doesn't consume API trail #############
 
   // useEffect(() => {
   //   const fetchAITips = async () => {

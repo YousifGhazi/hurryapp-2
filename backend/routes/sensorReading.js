@@ -5,22 +5,16 @@ const prisma = new PrismaClient();
 
 // POST a new reading sensor
 router.post('/readingSensors', async (req, res) => {
-  const { sensor_id, temperature, humidity, concentration, co, Alcohol, CO2, Toluen, NH4, Aceton, particle_level, air_quality_label } = req.body;
+  const { sensor_id, temp, hum, pm25, co2 } = req.body;
+
   try {
     const newReadingSensor = await prisma.readingSensors.create({
       data: {
         sensor_id,
-        temperature,
-        humidity,
-        concentration,
-        co,
-        Alcohol,
-        CO2,
-        Toluen,
-        NH4,
-        Aceton,
-        particle_level,
-        air_quality_label,
+        temp,
+        hum,
+        co2,
+        pm25,
       },
     });
     res.status(201).json(newReadingSensor);
@@ -33,12 +27,40 @@ router.post('/readingSensors', async (req, res) => {
 // GET all reading sensors
 router.get('/readingSensors', async (req, res) => {
   try {
-    const readingSensors = await prisma.readingSensors.findMany({});
-    res.json(readingSensors);
+    const latestReading = await prisma.readingSensors.findFirst({
+      orderBy: {
+        timestamp: 'desc'
+      }
+    });
+
+    console.log(latestReading);
+    res.status(200).send(latestReading);
   } catch (error) {
     console.error('Error fetching reading sensors:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+router.get('/history', async (req, res) => {
+  try {
+    const maxReadingsPerDay = await prisma.$queryRaw`
+      SELECT DATE("timestamp") as date, 
+             MAX(temp) as "maxTemp", 
+             MAX(hum) as "maxHum", 
+             MAX(co2) as "maxCO2", 
+             MAX(pm25) as "maxPM25"
+      FROM "ReadingSensors"
+      GROUP BY DATE("timestamp")
+      ORDER BY date DESC
+    `;
+
+    console.log(maxReadingsPerDay);
+    res.status(200).send(maxReadingsPerDay);
+  } catch (error) {
+    console.error('Error fetching reading sensors:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 module.exports = router;
