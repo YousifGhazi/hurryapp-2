@@ -25,10 +25,23 @@ function AQIChart() {
           const days = Array(7).fill(0);
 
           data.forEach((item, index) => {
-            readings[index] = getAQIInfo(item.maxCO2).aqi
+            readings[index] = getAQIInfo(item.maxCO2).aqi;
             const day = new Date(item.date);
-            days[index] = new String(day).split(' ')[0];
+            days[index] = new String(day).split(" ")[0];
           });
+          // fill the rest of the days array with the missing days according to the last day in the data
+          for (let i = 0; i < days.length; i++) {
+            if (days[i] === 0) {
+              // set the next day as the previous day - 1 (day)
+              days[i] = new Date(
+                new Date(days[i - 1]).setDate(
+                  new Date(days[i - 1]).getDate() - 1
+                )
+              )
+                .toDateString()
+                .split(" ")[0];
+            }
+          }
 
           setChartDays(days.reverse());
           console.log(readings);
@@ -99,16 +112,14 @@ function AQIChart() {
             ))}
           </div>
           <div className="flex h-full w-full justify-between">
-            {chartDays.map(
-              (day, index) => (
-                <p
-                  key={index}
-                  className="w-[12%] max-w-[45px] mt-1 font-[500] text-black opacity-40 text-[10px] text-center"
-                >
-                  {day}
-                </p>
-              )
-            )}
+            {chartDays.map((day, index) => (
+              <p
+                key={index}
+                className="w-[12%] max-w-[45px] mt-1 font-[500] text-black opacity-40 text-[10px] text-center"
+              >
+                {day}
+              </p>
+            ))}
           </div>
         </div>
       </div>
