@@ -20,8 +20,6 @@ const Forecast = ({ data, aqi, status }) => {
         fetchData();
     }, []);
 
-    console.log(aqiHistory, 'aqi history');
-
     return (
         <div className="my-8">
             <p className=" font-medium text-xs opacity-75 pb-3">Forecast</p>
@@ -37,7 +35,6 @@ const Forecast = ({ data, aqi, status }) => {
                             });
                             const { aqi, category } = getAQIInfo(v.maxCO2);
                             const icon = getIcon(category);
-                            console.log(icon);
                             return (
                                 <CarouselItem
                                     className="basis-[auto] w-fit p-0 select-none "

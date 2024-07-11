@@ -85,5 +85,4 @@ router.get('/forecast', async (req, res) => {
 });
 
 
-
 module.exports = router;

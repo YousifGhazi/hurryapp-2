@@ -7,25 +7,28 @@ function AQIChart() {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      const res = await fetch("http://localhost:3001/api/history");
-      const data = await res.json();
+      try {
+        const res = await fetch("http://localhost:3001/api/history");
+        let data = await res.json();
 
-      // Process the fetched data to calculate AQI values and store only AQI values
-      const readings = data.map(item => getAQIInfo(item.maxCO2).aqi);
+        data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-      // Ensure the array has exactly 7 elements
-      while (readings.length < 7) {
-        readings.push(0);
+        console.log(data, 'data');
+
+        const readings = Array(7).fill(0);
+
+        data.forEach(item => {
+          const date = new Date(item.date);
+          const dayOfWeek = date.getDay();
+          console.log(dayOfWeek);
+          readings[7 - dayOfWeek] = getAQIInfo(item.maxCO2).aqi;
+        });
+
+        console.log(readings);
+        setAQIHistory(readings);
+      } catch (error) {
+        console.error("Error fetching AQI history:", error);
       }
-
-      // If there are more than 7 readings, take the last 7
-      if (readings.length > 7) {
-        readings.splice(0, readings.length - 7);
-      }
-
-      readings.reverse();
-      console.log(readings, 'reading');
-      setAQIHistory(readings);
     };
     fetchHistory();
   }, []);
@@ -88,13 +91,12 @@ function AQIChart() {
             ))}
           </div>
           <div className="flex h-full w-full justify-between">
-            {AQIHistory.map((_, index) => (
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
               <p
                 key={index}
                 className="w-[12%] max-w-[45px] mt-1 font-[500] text-black opacity-40 text-[10px] text-center"
               >
-                {/* Assuming you want to show day names or some labels */}
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][index % 7]}
+                {day}
               </p>
             ))}
           </div>

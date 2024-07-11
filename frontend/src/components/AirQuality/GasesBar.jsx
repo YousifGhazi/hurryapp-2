@@ -8,7 +8,7 @@ const GasesBar = ({ name, value, status }) => {
 
     useEffect(() => {
         if (barRef.current) {
-            barRef.current.style.height = `${percentage}%`;
+            barRef.current.style.height = `${percentage / 40}%`;
         }
     }, [percentage]);
 
@@ -23,7 +23,7 @@ const GasesBar = ({ name, value, status }) => {
                     }}
                 ></div>
             </div>
-            <div className="flex flex-col gap-1 pl-3 pt-2">
+            <div className="flex flex-col gap-1 pl-3 pt-2 w-20">
                 <p className="text-[10px]">{name} (ppm)</p>
                 <p className="font-bold text-xl">{value}</p>
             </div>

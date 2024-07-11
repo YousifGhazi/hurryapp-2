@@ -153,9 +153,6 @@ function AirQuality() {
     calcTaulen();
   }, [data]);
 
-  console.log(aqi);
-
-  console.log(data, 'last data');
   return (
     <div className="w-full mx-auto ">
       <Card className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
