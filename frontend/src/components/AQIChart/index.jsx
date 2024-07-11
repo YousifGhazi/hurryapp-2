@@ -66,7 +66,7 @@ function AQIChart() {
               >
                 <div
                   className={clsx(
-                    "flex items-center justify-center absolute text-white w-[80%] aspect-square text-[11px] font-semibold rounded-full top-0 translate-y-[-50%] left-[50%] translate-x-[-50%]",
+                    "flex items-center justify-center absolute text-white w-[80%] aspect-square text-[11px] font-semibold rounded-full top-0 left-[50%] translate-x-[-50%]",
                     getChartColor("backgrounds", reading),
                     getChartColor("borders", reading),
                     reading < 1 ? "translate-y-[-100%]" : "translate-y-[-50%]"
