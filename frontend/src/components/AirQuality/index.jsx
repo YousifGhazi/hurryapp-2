@@ -6,6 +6,7 @@ import AQIstatus from "./AQIstatus";
 import GasesBar from "./GasesBar";
 import Forecast from "./Forecast";
 import { Card } from "../ui/card";
+import useLocations from "@/store/locations";
 
 export const getAQIInfo = (co2) => {
   const co2Breakpoints = [
@@ -14,7 +15,7 @@ export const getAQIInfo = (co2) => {
     { cLow: 1201, cHigh: 1800, iLow: 101, iHigh: 150 },
     { cLow: 1801, cHigh: 2400, iLow: 151, iHigh: 200 },
     { cLow: 2401, cHigh: 3200, iLow: 201, iHigh: 300 },
-    { cLow: 3201, cHigh: 4000, iLow: 301, iHigh: 500 }
+    { cLow: 3201, cHigh: 4000, iLow: 301, iHigh: 500 },
   ];
 
   const calculateCO2AQI = (co2) => {
@@ -25,7 +26,7 @@ export const getAQIInfo = (co2) => {
         return Math.round(aqi);
       }
     }
-    return '0';
+    return "0";
   };
 
   const aqi = calculateCO2AQI(co2);
@@ -36,32 +37,34 @@ export const getAQIInfo = (co2) => {
 
 export const getCategory = (aqi) => {
   if (aqi >= 0 && aqi <= 50) {
-    return 'Good';
+    return "Good";
   } else if (aqi >= 51 && aqi <= 100) {
-    return 'Moderate';
+    return "Moderate";
   } else if (aqi >= 101 && aqi <= 150) {
-    return 'Unhealthy for Sensitive Groups';
+    return "Unhealthy for Sensitive Groups";
   } else if (aqi >= 151 && aqi <= 200) {
-    return 'Unhealthy';
+    return "Unhealthy";
   } else if (aqi >= 201 && aqi <= 300) {
-    return 'Very Unhealthy';
+    return "Very Unhealthy";
   } else if (aqi >= 301 && aqi <= 500) {
-    return 'Hazardous';
+    return "Hazardous";
   } else {
-    return 'Value out of range';
+    return "Value out of range";
   }
 };
 
 function AirQuality() {
   const [data, setData] = useState(0);
   const [flag, setFlag] = useState(false);
+  const getActiveLocation = useLocations((state) => state.getActiveLocation);
+  const id = getActiveLocation()?.id;
   const [readings, setReadings] = useState({
     co: 0,
     nh3: 0,
     nh4: 0,
     taulen: 0,
-    alcohol: 0
-  })
+    alcohol: 0,
+  });
 
   useEffect(() => {
     const socket = io("http://localhost:8080");
@@ -87,12 +90,12 @@ function AirQuality() {
   }, []);
 
   useEffect(() => {
-    if (flag) {
+    if (flag && id) {
       console.log("Fetching data...");
       const fetchData = async () => {
         try {
           const res = await axios.get(
-            "http://localhost:3001/api/readingSensors",
+            `http://localhost:3001/api/readingSensors?id=${id}`,
             {
               headers: { "Content-Type": "application/json" },
             }
@@ -106,44 +109,44 @@ function AirQuality() {
 
       fetchData();
     }
-  }, [flag]);
+  }, [flag, id]);
 
   const { aqi, category } = useMemo(() => getAQIInfo(data.co2), [data]);
 
   const calcCO = () => {
     setReadings((prev) => ({
       ...prev,
-      co: Math.floor((data.co2 - 400) * 6)
+      co: Math.floor((data.co2 - 400) * 6),
     }));
-  }
+  };
 
   const calcNH3 = () => {
     setReadings((prev) => ({
       ...prev,
-      nh3: Math.floor((data.co2 - 400) * 2)
+      nh3: Math.floor((data.co2 - 400) * 2),
     }));
-  }
+  };
 
   const calcNH4 = () => {
     setReadings((prev) => ({
       ...prev,
-      nh4: Math.floor(data.co2 - 400)
+      nh4: Math.floor(data.co2 - 400),
     }));
-  }
+  };
 
   const calcAlcohol = () => {
     setReadings((prev) => ({
       ...prev,
-      alcohol: Math.floor((data.co2 - 400) * 0.7)
+      alcohol: Math.floor((data.co2 - 400) * 0.7),
     }));
-  }
+  };
 
   const calcTaulen = () => {
     setReadings((prev) => ({
       ...prev,
-      taulen: Math.floor((data.co2 - 400) * 0.5)
+      taulen: Math.floor((data.co2 - 400) * 0.5),
     }));
-  }
+  };
 
   useEffect(() => {
     calcCO();
@@ -171,13 +174,25 @@ function AirQuality() {
           <div className="w-full h-24 flex flex-col items-center justify-center">
             <div className="flex w-full">
               <GasesBar name="CO" value={readings.co} status={category} />
-              <GasesBar name="CO2" value={Math.floor(data.co2)} status={category} />
+              <GasesBar
+                name="CO2"
+                value={Math.floor(data.co2)}
+                status={category}
+              />
               <GasesBar name="NH3" value={readings.nh3} status={category} />
             </div>
             <div className="w-full flex">
               <GasesBar name="NH4" value={readings.nh4} status={category} />
-              <GasesBar name="Taulen" value={readings.taulen} status={category} />
-              <GasesBar name="Alcohol" value={readings.alcohol} status={category} />
+              <GasesBar
+                name="Taulen"
+                value={readings.taulen}
+                status={category}
+              />
+              <GasesBar
+                name="Alcohol"
+                value={readings.alcohol}
+                status={category}
+              />
             </div>
           </div>
         </div>

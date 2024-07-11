@@ -1,37 +1,43 @@
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { getAQIInfo } from "../AirQuality";
+import useLocations from "@/store/locations";
 
 function AQIChart() {
-  const [AQIHistory, setAQIHistory] = useState([]);
+  const [AQIHistory, setAQIHistory] = useState([0, 0, 0, 0, 0, 0, 0]);
+
+  const getActiveLocation = useLocations((state) => state.getActiveLocation);
+  const id = getActiveLocation()?.id;
 
   useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const res = await fetch("http://localhost:3001/api/history");
-        let data = await res.json();
+    if (id) {
+      const fetchHistory = async () => {
+        try {
+          const res = await fetch(`http://localhost:3001/api/history?id=${id}`);
+          let data = await res.json();
 
-        data.sort((a, b) => new Date(a.date) - new Date(b.date));
+          data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-        console.log(data, 'data');
+          console.log(data, "data");
 
-        const readings = Array(7).fill(0);
+          const readings = Array(7).fill(0);
 
-        data.forEach(item => {
-          const date = new Date(item.date);
-          const dayOfWeek = date.getDay();
-          console.log(dayOfWeek);
-          readings[7 - dayOfWeek] = getAQIInfo(item.maxCO2).aqi;
-        });
+          data.forEach((item) => {
+            const date = new Date(item.date);
+            const dayOfWeek = date.getDay();
+            console.log(dayOfWeek);
+            readings[7 - dayOfWeek] = getAQIInfo(item.maxCO2).aqi;
+          });
 
-        console.log(readings);
-        setAQIHistory(readings);
-      } catch (error) {
-        console.error("Error fetching AQI history:", error);
-      }
-    };
-    fetchHistory();
-  }, []);
+          console.log(readings);
+          setAQIHistory(readings);
+        } catch (error) {
+          console.error("Error fetching AQI history:", error);
+        }
+      };
+      fetchHistory();
+    }
+  }, [id]);
 
   const colors = {
     borders: [
@@ -91,14 +97,16 @@ function AQIChart() {
             ))}
           </div>
           <div className="flex h-full w-full justify-between">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
-              <p
-                key={index}
-                className="w-[12%] max-w-[45px] mt-1 font-[500] text-black opacity-40 text-[10px] text-center"
-              >
-                {day}
-              </p>
-            ))}
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+              (day, index) => (
+                <p
+                  key={index}
+                  className="w-[12%] max-w-[45px] mt-1 font-[500] text-black opacity-40 text-[10px] text-center"
+                >
+                  {day}
+                </p>
+              )
+            )}
           </div>
         </div>
       </div>
