@@ -3,9 +3,19 @@ import clsx from "clsx";
 
 function AQIChart() {
   const [AQIHisory, setAQIHisory] = useState([]);
+
   useEffect(() => {
-    setAQIHisory([0, 1, 7, 4, 3, 8, 2]);
+    setAQIHisory([0, 5, 7, 4, 3, 8, 2]);
   }, []);
+
+  // useEffect(() => {
+  //   const fetchHistory = async () => {
+  //     const res = await fetch("http://localhost:3001/history");
+  //     const data = await res.json();
+  //     setAQIHisory(data);
+  //   };
+  //   fetchHistory();
+  // }, []);
 
   const colors = {
     borders: [
