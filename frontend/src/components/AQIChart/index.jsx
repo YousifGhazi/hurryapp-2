@@ -5,15 +5,20 @@ import { getAQIInfo } from "../AirQuality";
 function AQIChart() {
   const [AQIHisory, setAQIHisory] = useState([]);
 
-  useEffect(() => {
-    setAQIHisory([0, 5, 7, 4, 3, 8, 2]);
-  }, []);
+  // useEffect(() => {
+  //   setAQIHisory([0, 5, 7, 4, 3, 8, 2]);
+  // }, []);
 
   useEffect(() => {
     const fetchHistory = async () => {
       const res = await fetch("http://localhost:3001/api/history");
       const data = await res.json();
-      setAQIHisory(data);
+      const readings = [0, 0, 0, 0, 0, 0, 0];
+      for (let i = 0; i < data.length; i++) {
+        readings[i] = getAQIInfo(data[i].maxCO2);
+      }
+      readings.reverse();
+      setAQIHisory(readings);
     };
     fetchHistory();
   }, []);
@@ -76,14 +81,14 @@ function AQIChart() {
             ))}
           </div>
           <div className="flex h-full w-full justify-between">
-            {/* {AQIHisory.map((reading, index) => (
+            {AQIHisory.map((reading, index) => (
               <p
                 key={index}
                 className="w-[12%] max-w-[45px] mt-1 font-[500] text-black opacity-40 text-[10px]  text-center"
               >
                 SUN
               </p>
-            ))} */}
+            ))}
           </div>
         </div>
       </div>
