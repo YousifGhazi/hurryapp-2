@@ -5,7 +5,7 @@ import useLocations from "@/store/locations";
 
 function AQIChart() {
   const [AQIHistory, setAQIHistory] = useState([0, 0, 0, 0, 0, 0, 0]);
-
+  const [chartDays, setChartDays] = useState([]);
   const getActiveLocation = useLocations((state) => state.getActiveLocation);
   const id = getActiveLocation()?.id;
 
@@ -22,15 +22,17 @@ function AQIChart() {
 
           const readings = Array(7).fill(0);
 
-          data.forEach((item) => {
-            const date = new Date(item.date);
-            const dayOfWeek = date.getDay();
-            console.log(dayOfWeek);
-            readings[7 - dayOfWeek] = getAQIInfo(item.maxCO2).aqi;
+          const days = Array(7).fill(0);
+
+          data.forEach((item, index) => {
+            readings[index] = getAQIInfo(item.maxCO2).aqi
+            const day = new Date(item.date);
+            days[index] = new String(day).split(' ')[0];
           });
 
+          setChartDays(days.reverse());
           console.log(readings);
-          setAQIHistory(readings);
+          setAQIHistory(readings.reverse());
         } catch (error) {
           console.error("Error fetching AQI history:", error);
         }
@@ -81,7 +83,7 @@ function AQIChart() {
                   "relative self-end h-[200px] w-[11%] max-w-[45px] rounded-sm",
                   getChartColor("line", reading)
                 )}
-                style={{ height: `${(reading / 500) * 100}%` }}
+                style={{ height: `${(reading / 300) * 100}%` }}
               >
                 <div
                   className={clsx(
@@ -97,7 +99,7 @@ function AQIChart() {
             ))}
           </div>
           <div className="flex h-full w-full justify-between">
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+            {chartDays.map(
               (day, index) => (
                 <p
                   key={index}

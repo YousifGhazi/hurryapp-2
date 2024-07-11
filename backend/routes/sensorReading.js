@@ -26,8 +26,15 @@ router.post('/readingSensors', async (req, res) => {
 
 // GET all reading sensors
 router.get('/readingSensors', async (req, res) => {
+  const { id } = req.query;
+
+  console.log(id);
+
   try {
     const latestReading = await prisma.readingSensors.findFirst({
+      where: {
+        sensor_id: Number(id)
+      },
       orderBy: {
         timestamp: 'desc'
       }
@@ -42,17 +49,25 @@ router.get('/readingSensors', async (req, res) => {
 });
 
 router.get('/history', async (req, res) => {
+  const { id } = req.query;
+
+  if (!id) {
+    return res.status(400).json({ error: 'Sensor ID is required' });
+  }
+
   try {
     const maxReadingsPerDay = await prisma.$queryRaw`
-      SELECT DATE("timestamp") as date, 
-             MAX(temp) as "maxTemp", 
-             MAX(hum) as "maxHum", 
-             MAX(co2) as "maxCO2", 
-             MAX(pm25) as "maxPM25"
-      FROM "ReadingSensors"
-      GROUP BY DATE("timestamp")
-      ORDER BY date DESC
-    `;
+    SELECT DATE("timestamp") as date, 
+           MAX(temp) as "maxTemp", 
+           MAX(hum) as "maxHum", 
+           MAX(co2) as "maxCO2", 
+           MAX(pm25) as "maxPM25"
+    FROM "ReadingSensors"
+    WHERE sensor_id = ${Number(id)}  -- Explicitly cast id to integer if necessary
+    GROUP BY DATE("timestamp")
+    ORDER BY date DESC
+  `;
+
 
     console.log(maxReadingsPerDay);
     res.status(200).send(maxReadingsPerDay);
@@ -62,8 +77,11 @@ router.get('/history', async (req, res) => {
   }
 });
 
+
 router.get('/forecast', async (req, res) => {
   try {
+    const { id } = req.query;
+
     const maxReadingsPerHour = await prisma.$queryRaw`
       SELECT 
         TO_CHAR(DATE_TRUNC('hour', "timestamp"), 'YYYY-MM-DD"T"HH24:00:00.000"Z"') as hour,
@@ -72,6 +90,7 @@ router.get('/forecast', async (req, res) => {
         MAX(co2) as "maxCO2", 
         MAX(pm25) as "maxPM25"
       FROM "ReadingSensors"
+      WHERE sensor_id = ${Number(id)}  -- Assuming you want to filter by sensor_id
       GROUP BY TO_CHAR(DATE_TRUNC('hour', "timestamp"), 'YYYY-MM-DD"T"HH24:00:00.000"Z"')
       ORDER BY hour DESC
     `;
@@ -83,6 +102,7 @@ router.get('/forecast', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 
 module.exports = router;
