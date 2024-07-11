@@ -42,6 +42,7 @@ function MAP() {
       center: [lng, lat],
       zoom: zoom,
     });
+
     if (location?.list) {
       for (const marker of location.list) {
         console.log(marker);
@@ -59,13 +60,13 @@ function MAP() {
         el.style.padding = 0;
 
         el.addEventListener("click", () => {
-          jumpTo(marker.coordinates[1], marker.coordinates[0], 15, 1);
+          jumpTo(marker.coordinates[0], marker.coordinates[1], 15, 1);
           setActiveLocation(marker.id);
           transformPage();
         });
 
         new mapboxgl.Marker(el)
-          .setLngLat(marker.coordinates.reverse())
+          .setLngLat([marker.coordinates[1], marker.coordinates[0]])
           .addTo(map.current);
       }
     }

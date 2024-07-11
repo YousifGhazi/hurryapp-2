@@ -3,7 +3,6 @@ import MAP from "@/pages/map";
 import useLocations from "@/store/locations";
 import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import useHTTP from "./hooks/useHTTP";
 import { AnimatePresence } from "framer-motion";
 
 function App() {
@@ -16,11 +15,6 @@ function App() {
         address: "Hub200, Baghdad",
         id: 1,
         coordinates: [33.314145062834854, 44.422286165730895],
-      },
-      {
-        address: "Test, Baghdad",
-        id: 3,
-        coordinates: [34.314145062834854, 45.422286165730895],
       },
     ];
     setLocationsList(loc);
