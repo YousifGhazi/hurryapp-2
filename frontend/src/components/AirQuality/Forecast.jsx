@@ -1,11 +1,26 @@
+import { useEffect, useState } from "react"
 import { SmileFace } from "../home page/icons"
 import { Card, CardContent } from "../ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel"
 import { getIcon } from "./AQIstatus"
+import axios from "axios"
+import { getAQIInfo } from "."
 
 const Forecast = ({ data, aqi, status }) => {
+    const [aqiHistory, setAqiHistory] = useState([]);
+    // const [icon, color] = getIcon(status);
 
-    const [icon, color] = getIcon(status);
+    const fetchData = async () => {
+        await axios.get('http://localhost:3001/api/forecast')
+            .then(res => setAqiHistory(res.data))
+            .catch(e => console.log(e));
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    console.log(aqiHistory, 'aqi history');
 
     return (
         <div className="my-8">
@@ -14,7 +29,15 @@ const Forecast = ({ data, aqi, status }) => {
             <Carousel className="m-auto">
                 <CarouselContent className="gap-2 mx-auto">
                     {
-                        data && data.map((v, i) => {
+                        aqiHistory && aqiHistory.map((v, i) => {
+                            const date = new Date(v.hour);
+                            const hour = date.toLocaleString('en-US', {
+                                hour: 'numeric',
+                                hour12: true
+                            });
+                            const { aqi, category } = getAQIInfo(v.maxCO2);
+                            const icon = getIcon(category);
+                            console.log(icon);
                             return (
                                 <CarouselItem
                                     className="basis-[auto] w-fit p-0 select-none "
@@ -22,8 +45,8 @@ const Forecast = ({ data, aqi, status }) => {
                                 >
                                     <Card>
                                         <CardContent className="px-2 py-2 flex flex-col items-center justify-center">
-                                            <p className=" text-[10x] font-light mb-1.5">17:00</p>
-                                            {icon}
+                                            <p className=" text-[10x] font-light mb-1.5">{hour}</p>
+                                            {icon[0]}
                                             <p className="text-base font-bold flex justify-center gap-2">
                                                 {aqi} <span className=" text-[10px] font-normal">AQI</span>
                                             </p>

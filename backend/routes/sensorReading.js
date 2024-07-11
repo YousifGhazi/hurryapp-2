@@ -62,5 +62,28 @@ router.get('/history', async (req, res) => {
   }
 });
 
+router.get('/forecast', async (req, res) => {
+  try {
+    const maxReadingsPerHour = await prisma.$queryRaw`
+      SELECT 
+        TO_CHAR(DATE_TRUNC('hour', "timestamp"), 'YYYY-MM-DD"T"HH24:00:00.000"Z"') as hour,
+        MAX(temp) as "maxTemp", 
+        MAX(hum) as "maxHum", 
+        MAX(co2) as "maxCO2", 
+        MAX(pm25) as "maxPM25"
+      FROM "ReadingSensors"
+      GROUP BY TO_CHAR(DATE_TRUNC('hour', "timestamp"), 'YYYY-MM-DD"T"HH24:00:00.000"Z"')
+      ORDER BY hour DESC
+    `;
+
+    console.log(maxReadingsPerHour);
+    res.status(200).send(maxReadingsPerHour);
+  } catch (error) {
+    console.error('Error fetching reading sensors:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 module.exports = router;

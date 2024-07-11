@@ -55,6 +55,13 @@ export const getCategory = (aqi) => {
 function AirQuality() {
   const [data, setData] = useState(0);
   const [flag, setFlag] = useState(false);
+  const [readings, setReadings] = useState({
+    co: 0,
+    nh3: 0,
+    nh4: 0,
+    taulen: 0,
+    alcohol: 0
+  })
 
   useEffect(() => {
     const socket = io("http://localhost:8080");
@@ -103,6 +110,52 @@ function AirQuality() {
 
   const { aqi, category } = useMemo(() => getAQIInfo(data.co2), [data]);
 
+  const calcCO = () => {
+    setReadings((prev) => ({
+      ...prev,
+      co: Math.floor((data.co2 - 400) * 6)
+    }));
+  }
+
+  const calcNH3 = () => {
+    setReadings((prev) => ({
+      ...prev,
+      nh3: Math.floor((data.co2 - 400) * 2)
+    }));
+  }
+
+  const calcNH4 = () => {
+    setReadings((prev) => ({
+      ...prev,
+      nh4: Math.floor(data.co2 - 400)
+    }));
+  }
+
+  const calcAlcohol = () => {
+    setReadings((prev) => ({
+      ...prev,
+      alcohol: Math.floor((data.co2 - 400) * 0.7)
+    }));
+  }
+
+  const calcTaulen = () => {
+    setReadings((prev) => ({
+      ...prev,
+      taulen: Math.floor((data.co2 - 400) * 0.5)
+    }));
+  }
+
+  useEffect(() => {
+    calcCO();
+    calcNH3();
+    calcNH4();
+    calcAlcohol();
+    calcTaulen();
+  }, [data]);
+
+  console.log(aqi);
+
+  console.log(data, 'last data');
   return (
     <div className="w-full mx-auto ">
       <Card className="bg-white rounded-lg w-full h-auto px-4 flex flex-col justify-start pt-4">
@@ -120,20 +173,20 @@ function AirQuality() {
         <div className="w-full flex justify-center my-8">
           <div className="w-full h-24 flex flex-col items-center justify-center">
             <div className="flex w-full">
-              <GasesBar name="CO" value={60} status={category} />
-              <GasesBar name="CO2" value={10} status={category} />
-              <GasesBar name="NH3" value={70} status={category} />
+              <GasesBar name="CO" value={readings.co} status={category} />
+              <GasesBar name="CO2" value={Math.floor(data.co2)} status={category} />
+              <GasesBar name="NH3" value={readings.nh3} status={category} />
             </div>
             <div className="w-full flex">
-              <GasesBar name="CO" value={10} status={category} />
-              <GasesBar name="Taulen" value={10} status={category} />
-              <GasesBar name="Alcohol" value={10} status={category} />
+              <GasesBar name="NH4" value={readings.nh4} status={category} />
+              <GasesBar name="Taulen" value={readings.taulen} status={category} />
+              <GasesBar name="Alcohol" value={readings.alcohol} status={category} />
             </div>
           </div>
         </div>
 
         {/* Update AQI value from historical data */}
-        {/* <Forecast data={data} aqi={aqiInfo.aqi} status={aqiInfo.category} /> */}
+        <Forecast data={data} aqi={aqi} status={category} />
       </Card>
     </div>
   );
