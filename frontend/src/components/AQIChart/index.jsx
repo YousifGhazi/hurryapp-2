@@ -13,7 +13,12 @@ function AQIChart() {
     const fetchHistory = async () => {
       const res = await fetch("http://localhost:3001/api/history");
       const data = await res.json();
-      setAQIHisory(data);
+      const readings = [0, 0, 0, 0, 0, 0, 0];
+      for (let i = 0; i < data.length; i++) {
+        readings[i] = getAQIInfo(data[i].maxCO2);
+      }
+      readings.reverse();
+      setAQIHisory(readings);
     };
     fetchHistory();
   }, []);
@@ -45,8 +50,6 @@ function AQIChart() {
     if (value < 7) return colors[type][2];
     return colors[type][3];
   };
-
-  // const { aqi, category } = useMemo(() => getAQIInfo(AQIHisory.maxCO2), [AQIHisory]);
 
   return (
     <>
