@@ -8,7 +8,7 @@ function AQIChart() {
   const [chartDays, setChartDays] = useState([]);
   const getActiveLocation = useLocations((state) => state.getActiveLocation);
   const id = getActiveLocation()?.id;
-
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   useEffect(() => {
     if (id) {
       const fetchHistory = async () => {
@@ -21,7 +21,6 @@ function AQIChart() {
           console.log(data, "data");
 
           const readings = Array(7).fill(0);
-
           const days = Array(7).fill(0);
 
           data.forEach((item, index) => {
@@ -29,22 +28,18 @@ function AQIChart() {
             const day = new Date(item.date);
             days[index] = new String(day).split(" ")[0];
           });
-          // fill the rest of the days array with the missing days according to the last day in the data
+
+          const date = new Date(data[0].date);
+          const day = new String(date).split(" ")[0];
+          let index = weekDays.indexOf(day);
           for (let i = 0; i < days.length; i++) {
-            if (days[i] === 0) {
-              // set the next day as the previous day - 1 (day)
-              days[i] = new Date(
-                new Date(days[i - 1]).setDate(
-                  new Date(days[i - 1]).getDate() - 1
-                )
-              )
-                .toDateString()
-                .split(" ")[0];
-            }
+            days[index % 6] = weekDays[index];
+            index++;
           }
 
           setChartDays(days.reverse());
           console.log(readings);
+          console.log(days);
           setAQIHistory(readings.reverse());
         } catch (error) {
           console.error("Error fetching AQI history:", error);
