@@ -7,6 +7,51 @@ import GasesBar from "./GasesBar";
 import Forecast from "./Forecast";
 import { Card } from "../ui/card";
 
+export const getAQIInfo = (co2) => {
+  const co2Breakpoints = [
+    { cLow: 0, cHigh: 600, iLow: 0, iHigh: 50 },
+    { cLow: 601, cHigh: 1200, iLow: 51, iHigh: 100 },
+    { cLow: 1201, cHigh: 1800, iLow: 101, iHigh: 150 },
+    { cLow: 1801, cHigh: 2400, iLow: 151, iHigh: 200 },
+    { cLow: 2401, cHigh: 3200, iLow: 201, iHigh: 300 },
+    { cLow: 3201, cHigh: 4000, iLow: 301, iHigh: 500 }
+  ];
+
+  const calculateCO2AQI = (co2) => {
+    for (let i = 0; i < co2Breakpoints.length; i++) {
+      const { cLow, cHigh, iLow, iHigh } = co2Breakpoints[i];
+      if (co2 >= cLow && co2 <= cHigh) {
+        const aqi = ((iHigh - iLow) / (cHigh - cLow)) * (co2 - cLow) + iLow;
+        return Math.round(aqi);
+      }
+    }
+    return '0';
+  };
+
+  const aqi = calculateCO2AQI(co2);
+  const category = getCategory(aqi);
+
+  return { aqi, category };
+};
+
+export const getCategory = (aqi) => {
+  if (aqi >= 0 && aqi <= 50) {
+    return 'Good';
+  } else if (aqi >= 51 && aqi <= 100) {
+    return 'Moderate';
+  } else if (aqi >= 101 && aqi <= 150) {
+    return 'Unhealthy for Sensitive Groups';
+  } else if (aqi >= 151 && aqi <= 200) {
+    return 'Unhealthy';
+  } else if (aqi >= 201 && aqi <= 300) {
+    return 'Very Unhealthy';
+  } else if (aqi >= 301 && aqi <= 500) {
+    return 'Hazardous';
+  } else {
+    return 'Value out of range';
+  }
+};
+
 function AirQuality() {
   const [data, setData] = useState(0);
   const [flag, setFlag] = useState(false);
@@ -56,54 +101,7 @@ function AirQuality() {
     }
   }, [flag]);
 
-  const getAQIInfo = (co2) => {
-    const co2Breakpoints = [
-      { cLow: 0, cHigh: 600, iLow: 0, iHigh: 50 },
-      { cLow: 601, cHigh: 1200, iLow: 51, iHigh: 100 },
-      { cLow: 1201, cHigh: 1800, iLow: 101, iHigh: 150 },
-      { cLow: 1801, cHigh: 2400, iLow: 151, iHigh: 200 },
-      { cLow: 2401, cHigh: 3200, iLow: 201, iHigh: 300 },
-      { cLow: 3201, cHigh: 4000, iLow: 301, iHigh: 500 }
-    ];
-
-    const calculateCO2AQI = (co2) => {
-      for (let i = 0; i < co2Breakpoints.length; i++) {
-        const { cLow, cHigh, iLow, iHigh } = co2Breakpoints[i];
-        if (co2 >= cLow && co2 <= cHigh) {
-          const aqi = ((iHigh - iLow) / (cHigh - cLow)) * (co2 - cLow) + iLow;
-          return Math.round(aqi);
-        }
-      }
-      return '0';
-    };
-
-    const aqi = calculateCO2AQI(co2);
-    const category = getCategory(aqi);
-
-    return { aqi, category };
-  };
-
-  const getCategory = (aqi) => {
-    if (aqi >= 0 && aqi <= 50) {
-      return 'Good';
-    } else if (aqi >= 51 && aqi <= 100) {
-      return 'Moderate';
-    } else if (aqi >= 101 && aqi <= 150) {
-      return 'Unhealthy for Sensitive Groups';
-    } else if (aqi >= 151 && aqi <= 200) {
-      return 'Unhealthy';
-    } else if (aqi >= 201 && aqi <= 300) {
-      return 'Very Unhealthy';
-    } else if (aqi >= 301 && aqi <= 500) {
-      return 'Hazardous';
-    } else {
-      return 'Value out of range';
-    }
-  };
-
   const { aqi, category } = useMemo(() => getAQIInfo(data.co2), [data]);
-
-  console.log(data);
 
   return (
     <div className="w-full mx-auto ">
