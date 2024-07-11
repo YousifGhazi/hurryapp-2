@@ -1,7 +1,5 @@
 {
   "scripts": {
-    "start": "node server.js",
-    "build": "prisma migrate deploy && prisma generate",
     "dev": "nodemon server.js"
   },
   "dependencies": {
