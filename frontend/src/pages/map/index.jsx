@@ -42,14 +42,18 @@ function MAP() {
       center: [lng, lat],
       zoom: zoom,
     });
-
+    const imgs = [
+      "bg-[url('./assets/hotal.jpeg')]",
+      "bg-[url('./assets/abass.jpeg')]",
+    ];
+    let i = 0;
     if (location?.list) {
       for (const marker of location.list) {
         console.log(marker);
         const el = document.createElement("div");
         const width = 40;
         const height = 40;
-        el.className = `marker bg-no-repeat !bg-cover bg-center rounded-[50%] bg-[url('./assets/hub200.jpeg')]`;
+        el.className = `marker bg-no-repeat !bg-cover bg-center rounded-[50%] ${imgs[i]}`;
         el.style.width = `${width}px`;
         el.style.height = `${height}px`;
         el.style.backgroundSize = "100%";
@@ -68,6 +72,8 @@ function MAP() {
         new mapboxgl.Marker(el)
           .setLngLat([marker.coordinates[1], marker.coordinates[0]])
           .addTo(map.current);
+
+        i++;
       }
     }
   }, []);
