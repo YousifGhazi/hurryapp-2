@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "node server.js",
-    "build": "yarn && prisma generate",
+    "build": "prisma migrate deploy && prisma generate",
     "dev": "nodemon server.js"
   },
   "dependencies": {
