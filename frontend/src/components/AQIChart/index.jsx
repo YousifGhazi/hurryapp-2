@@ -46,8 +46,6 @@ function AQIChart() {
     return colors[type][3];
   };
 
-  // const { aqi, category } = useMemo(() => getAQIInfo(AQIHisory.maxCO2), [AQIHisory]);
-
   return (
     <>
       <h2 className="text-xl font-bold">AQ History</h2>
@@ -55,7 +53,7 @@ function AQIChart() {
       <div className="py-4 ">
         <div className="mx-auto bg-white bg-repeating-linear bg-[length:30px_30px] h-[200px] w-full max-w-[500px]">
           <div className="flex  h-full w-full justify-between">
-            {/* {AQIHisory.map((reading, index) => (
+            {AQIHisory.map((reading, index) => (
               <div
                 key={index}
                 className={clsx(
@@ -75,7 +73,7 @@ function AQIChart() {
                   {reading}
                 </div>
               </div>
-            ))} */}
+            ))}
           </div>
           <div className="flex h-full w-full justify-between">
             {/* {AQIHisory.map((reading, index) => (
