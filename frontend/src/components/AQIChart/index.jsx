@@ -4,7 +4,7 @@ import clsx from "clsx";
 function AQIChart() {
   const [AQIHisory, setAQIHisory] = useState([]);
   useEffect(() => {
-    setAQIHisory([2, 5, 7, 4, 3, 8, 2]);
+    setAQIHisory([0, 1, 7, 4, 3, 8, 2]);
   }, []);
 
   const colors = {
@@ -55,7 +55,8 @@ function AQIChart() {
                   className={clsx(
                     "flex items-center justify-center absolute text-white w-[80%] aspect-square text-[11px] font-semibold rounded-full top-0 translate-y-[-50%] left-[50%] translate-x-[-50%]",
                     getChartColor("backgrounds", reading),
-                    getChartColor("borders", reading)
+                    getChartColor("borders", reading),
+                    reading < 1 ? "translate-y-[-100%]" : "translate-y-[-50%]"
                   )}
                 >
                   {reading}
