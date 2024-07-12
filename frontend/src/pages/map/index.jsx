@@ -7,7 +7,7 @@ import PageTransition from "@/components/PageTransition";
 import useLocations from "@/store/locations";
 
 mapboxgl.accessToken =
-  "pk.eyJ1IjoieW91c2lmLW9kYXkiLCJhIjoiY2x5OGp0cWxnMDd3OTJscGhmbWk5eDNxdSJ9.FASD-xbWAHmgzayQNOcHqQ";
+  "pk.eyJ1IjoieW91c2lmLW1hcCIsImEiOiJjbHlpa2pwdHkwaGJlMmpzaDRjOHppNG0zIn0.rcTSoU7nAR7zPpvKrsOkMA";
 function MAP() {
   const mapContainer = useRef(null);
   const map = useRef(null);
