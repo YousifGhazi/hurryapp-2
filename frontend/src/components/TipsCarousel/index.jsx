@@ -47,25 +47,32 @@ function TipsCarousel() {
     },
   ];
 
-
   // useEffect(() => {
   //   const fetchAITips = async () => {
-  //     const genAI = new GoogleGenerativeAI(
-  //       "AIzaSyDw1RjHEOjMF92tKYDALqHFqa8LpHFHLqY"
-  //     );
-  //     const model = genAI.getGenerativeModel({
-  //       model: "gemini-1.5-flash",
-  //       generationConfig: { responseMimeType: "application/json" },
-  //     });
-  //     const tips = await model.generateContent(`
-  //       List 8 tips and recommendations for an air quality app, each tips should not exceed 9 words, use this JSON schema:
-  //       {
-  //         title: "Stay Indoors",
-  //         text: "Stay indoors with windows closed during high pollution."
-  //       }`);
-  //     const tipsJSON = await JSON.parse(tips.response.text());
-  //     console.log("json", tipsJSON);
-  //     setTips(tipsJSON || fallback);
+  //     try {
+  //       const genAI = new GoogleGenerativeAI(
+  //         "AIzaSyDw1RjHEOjMF92tKYDALqHFqa8LpHFHLqY"
+  //       );
+  //       const model = genAI.getGenerativeModel({
+  //         model: "gemini-1.5-flash",
+  //         generationConfig: { responseMimeType: "application/json" },
+  //       });
+  //       const tips = await model.generateContent(`
+  //         List 8 tips and recommendations for an air quality app, each tips should not exceed 9 words, use this JSON schema:
+  //         [{
+  //           title: "Stay Indoors",
+  //           text: "Stay indoors with windows closed during high pollution."
+  //       }]`);
+  //       const tipsJSON = await JSON.parse(tips.response.text());
+  //       console.log("json", tipsJSON);
+  //       if (tipsJSON.tips) {
+  //         setTips(tipsJSON.tips);
+  //       } else {
+  //         setTips(tipsJSON);
+  //       }
+  //     } catch (error) {
+  //       setTips(fallback);
+  //     }
   //   };
   //   fetchAITips();
   // }, []);
@@ -73,11 +80,11 @@ function TipsCarousel() {
   return (
     <Carousel className="ml-2 w-[90%]  md:mx-auto">
       <CarouselContent>
-        {tips.length > 0 ? (
+        {tips.length > 0 &&
           tips.map((tip, index) => (
             <CarouselItem
               className="basis-[auto] md:basis-1/3 min-w-[280px] w-[50vw] md:w-full select-none"
-              key={index}
+              key={tip.title + index}
             >
               <div className="p-1 h-full">
                 <Card className="h-full">
@@ -88,9 +95,12 @@ function TipsCarousel() {
                 </Card>
               </div>
             </CarouselItem>
-          ))
-        ) : (
-          <CarouselItem className="basis-[auto] md:basis-1/3 min-w-[280px] w-[50vw] md:w-full select-none">
+          ))}
+        {tips.length < 1 && (
+          <CarouselItem
+            key={"fallback"}
+            className="basis-[auto] md:basis-1/3 min-w-[280px] w-[50vw] md:w-full select-none"
+          >
             <div className="p-1 h-full">
               <Card className="h-full">
                 <CardContent className="p-4">
