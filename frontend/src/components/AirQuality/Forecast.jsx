@@ -35,7 +35,7 @@ const Forecast = ({ data, aqi, status }) => {
 
   return (
     <div className="my-8">
-      <p className=" font-medium text-xs opacity-75 pb-3">Forecast</p>
+      <p className=" font-medium text-xs opacity-75 pb-3">History</p>
 
       <Carousel className="m-auto">
         <CarouselContent className="gap-2 mx-auto">

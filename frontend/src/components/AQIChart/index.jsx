@@ -8,7 +8,6 @@ function AQIChart() {
   const [chartDays, setChartDays] = useState([]);
   const getActiveLocation = useLocations((state) => state.getActiveLocation);
   const id = getActiveLocation()?.id;
-  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   useEffect(() => {
     if (id) {
       const fetchHistory = async () => {
@@ -18,28 +17,12 @@ function AQIChart() {
 
           data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-          console.log(data, "data");
-
           const readings = Array(7).fill(0);
-          const days = Array(7).fill(0);
 
           data.forEach((item, index) => {
             readings[index] = getAQIInfo(item.maxCO2).aqi;
-            const day = new Date(item.date);
-            days[index] = new String(day).split(" ")[0];
           });
 
-          const date = new Date(data[0].date);
-          const day = new String(date).split(" ")[0];
-          let index = weekDays.indexOf(day);
-          for (let i = 0; i < days.length; i++) {
-            days[index % 6] = weekDays[index];
-            index++;
-          }
-
-          setChartDays(days.reverse());
-          console.log(readings);
-          console.log(days);
           setAQIHistory(readings.reverse());
         } catch (error) {
           console.error("Error fetching AQI history:", error);
@@ -48,6 +31,17 @@ function AQIChart() {
       fetchHistory();
     }
   }, [id]);
+
+  useEffect(() => {
+    const days = Array(7).fill(0);
+    const today = new Date();
+    console.log(today);
+    for (let i = 0; i < 7; i++) {
+      days[i] = new String(today).split(" ")[0].toUpperCase();
+      today.setDate(today.getDate() - 1);
+    }
+    setChartDays(days.reverse());
+  }, []);
 
   const colors = {
     borders: [
@@ -79,7 +73,7 @@ function AQIChart() {
 
   return (
     <>
-      <h2 className="text-xl font-bold">AQ History</h2>
+      <h2 className="text-xl font-bold">AQI History</h2>
       <p className="text-[0.625rem] text-gray-600 mb-3">Last 7 days</p>
       <div className="py-4">
         <div className="mx-auto bg-white bg-repeating-linear bg-[length:30px_30px] h-[200px] w-full max-w-[500px]">
@@ -107,6 +101,7 @@ function AQIChart() {
             ))}
           </div>
           <div className="flex h-full w-full justify-between">
+            {console.log(chartDays, "chartDays")}
             {chartDays.map((day, index) => (
               <p
                 key={index}
