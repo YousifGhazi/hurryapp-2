@@ -47,35 +47,35 @@ function TipsCarousel() {
     },
   ];
 
-  // useEffect(() => {
-  //   const fetchAITips = async () => {
-  //     try {
-  //       const genAI = new GoogleGenerativeAI(
-  //         "AIzaSyDw1RjHEOjMF92tKYDALqHFqa8LpHFHLqY"
-  //       );
-  //       const model = genAI.getGenerativeModel({
-  //         model: "gemini-1.5-flash",
-  //         generationConfig: { responseMimeType: "application/json" },
-  //       });
-  //       const tips = await model.generateContent(`
-  //         List 8 tips and recommendations for an air quality app, each tips should not exceed 9 words, use this JSON schema:
-  //         [{
-  //           title: "Stay Indoors",
-  //           text: "Stay indoors with windows closed during high pollution."
-  //       }]`);
-  //       const tipsJSON = await JSON.parse(tips.response.text());
-  //       console.log("json", tipsJSON);
-  //       if (tipsJSON.tips) {
-  //         setTips(tipsJSON.tips);
-  //       } else {
-  //         setTips(tipsJSON);
-  //       }
-  //     } catch (error) {
-  //       setTips(fallback);
-  //     }
-  //   };
-  //   fetchAITips();
-  // }, []);
+  useEffect(() => {
+    const fetchAITips = async () => {
+      try {
+        const genAI = new GoogleGenerativeAI(
+          "AIzaSyDw1RjHEOjMF92tKYDALqHFqa8LpHFHLqY"
+        );
+        const model = genAI.getGenerativeModel({
+          model: "gemini-1.5-flash",
+          generationConfig: { responseMimeType: "application/json" },
+        });
+        const tips = await model.generateContent(`
+          List 8 tips and recommendations for an air quality app, each tips should not exceed 9 words, use this JSON schema:
+          [{
+            title: "Stay Indoors",
+            text: "Stay indoors with windows closed during high pollution."
+        }]`);
+        const tipsJSON = await JSON.parse(tips.response.text());
+        console.log("json", tipsJSON);
+        if (tipsJSON.tips) {
+          setTips(tipsJSON.tips);
+        } else {
+          setTips(tipsJSON);
+        }
+      } catch (error) {
+        setTips(fallback);
+      }
+    };
+    fetchAITips();
+  }, []);
 
   return (
     <Carousel className="ml-2 w-[90%]  md:mx-auto">

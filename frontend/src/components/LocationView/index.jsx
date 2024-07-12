@@ -23,8 +23,8 @@ function LocationView() {
       <div className="hidden md:block mt-12 text-sm">
         {activeLocation?.coordinates && (
           <>
-            <p className="mt-2">Lang: {activeLocation?.coordinates?.[0]}</p>
-            <p className="mt-2">Late: {activeLocation?.coordinates?.[1]}</p>
+            <p className="mt-2 font-normal opacity-90">Lang: {activeLocation?.coordinates?.[0]}</p>
+            <p className="mt-2 font-normal opacity-90">Late: {activeLocation?.coordinates?.[1]}</p>
           </>
         )}
       </div>
